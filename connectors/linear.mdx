@@ -1,0 +1,66 @@
+---
+title: Linear
+description: Connect Linear to index issues, projects, and comments
+---
+
+The Linear connector indexes issues, projects, and related content from your Linear workspace.
+
+## What gets indexed
+
+- Issues and sub-issues
+- Issue descriptions and comments
+- Projects and milestones
+- Labels and custom fields
+- Issue relationships
+
+## Setup
+
+### 1. Create an API key
+
+1. Go to Linear Settings > API
+2. Click "Create new key"
+3. Name your key
+4. Copy the key
+
+### 2. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Linear
+3. Enter your API key
+4. Click "Save"
+
+## Permissions
+
+Linear permissions are respected:
+
+- Users only see issues from teams they're members of
+- Private teams remain private
+- Guest access is preserved
+
+## Webhook setup
+
+For real-time updates:
+
+1. In Linear Settings > API > Webhooks
+2. Create a new webhook
+3. Set URL to: `https://webhooks.grapevine.ai/linear`
+4. Select events:
+   - Issue created
+   - Issue updated
+   - Issue deleted
+   - Comment created
+
+## Indexed content
+
+- Issue title and description
+- Comments and reactions
+- Status and priority
+- Assignee and creator
+- Labels and estimates
+- Project and cycle information
+
+## Limitations
+
+- Maximum 100,000 issues per workspace
+- Archived issues are not indexed by default
+- Attachments are not indexed (only metadata)
