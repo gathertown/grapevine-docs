@@ -9,79 +9,48 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
+        "group": "Getting started",
+        "pages": [
+          "getting-started/quickstart",
+          "getting-started/what-is-grapevine",
+          "getting-started/security-privacy",
+          "getting-started/authentication"
         ]
       },
       {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
+        "group": "Examples",
+        "pages": [
+          "examples/qa-slackbot"
+        ]
+      },
+      {
+        "group": "Features",
+        "pages": [
+          "features/ask-agent",
+          "features/webhooks",
+          "features/agentic-search-mcp"
+        ]
+      },
+      {
+        "group": "Connectors",
+        "pages": [
+          "connectors/slack",
+          "connectors/notion",
+          "connectors/github",
+          "connectors/confluence",
+          "connectors/jira",
+          "connectors/linear",
+          "connectors/google-drive",
+          "connectors/google-email",
+          "connectors/salesforce",
+          "connectors/hubspot",
+          "connectors/gong",
+          "connectors/gather"
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
