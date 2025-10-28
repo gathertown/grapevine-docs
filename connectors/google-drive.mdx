@@ -1,0 +1,67 @@
+---
+title: Google Drive
+description: Connect Google Drive to index documents, sheets, and files
+---
+
+The Google Drive connector indexes documents, spreadsheets, presentations, and other files from Google Drive.
+
+## What gets indexed
+
+- Google Docs
+- Google Sheets
+- Google Slides
+- PDFs
+- Text files
+- Markdown files
+- File metadata and comments
+
+## Setup
+
+### 1. Enable Google Drive API
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create a new project or select existing
+3. Enable Google Drive API
+4. Create OAuth 2.0 credentials
+
+### 2. Configure OAuth consent
+
+1. Set up OAuth consent screen
+2. Add scopes:
+   - `https://www.googleapis.com/auth/drive.readonly`
+   - `https://www.googleapis.com/auth/drive.metadata.readonly`
+
+### 3. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Google Drive
+3. Authorize with Google
+4. Select drives to index
+
+## Permissions
+
+Google Drive permissions are preserved:
+
+- Users only see files they have access to
+- Shared drive permissions are respected
+- Private files remain private
+
+## Webhook setup
+
+Webhooks are automatically configured during setup for real-time updates.
+
+## Supported file types
+
+- Google Docs (`.gdoc`)
+- Google Sheets (`.gsheet`)
+- Google Slides (`.gslide`)
+- PDF (`.pdf`)
+- Text files (`.txt`, `.md`)
+- Microsoft Office files (`.docx`, `.xlsx`, `.pptx`)
+
+## Limitations
+
+- Files larger than 10MB are truncated
+- Binary files are not indexed
+- Embedded objects may have limited indexing
+- Maximum 100,000 files per drive
