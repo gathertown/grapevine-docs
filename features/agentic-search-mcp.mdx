@@ -91,3 +91,38 @@ Perform semantic similarity search.
 
 ```
 User: Can you find information about our Q4 roadmap?
+Assistant: [Searches Grapevine and provides answer with citations]
+```
+
+### Filtered search
+
+```
+User: What engineering decisions were made last month?
+Assistant: [Searches with date filter and source filter for GitHub/Linear]
+```
+
+## Security
+
+The MCP server respects all Grapevine permissions:
+
+- Users only see content they have access to
+- API keys are scoped to specific organizations
+- All requests are authenticated and logged
+
+## Troubleshooting
+
+### Connection issues
+
+If the MCP server fails to connect:
+
+1. Verify your API key is correct
+2. Check that MCP access is enabled for your account
+3. Ensure you're using the latest version of the MCP server
+
+### Permission errors
+
+If you receive permission errors:
+
+1. Verify your API key has the correct scopes
+2. Check that your user has access to the requested content
+3. Contact support if issues persist
