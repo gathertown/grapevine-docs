@@ -1,0 +1,72 @@
+---
+title: Notion
+description: Connect Notion to index pages and databases
+---
+
+The Notion connector indexes pages, databases, and their content from your Notion workspace.
+
+## What gets indexed
+
+- Pages and sub-pages
+- Database entries
+- Page content (text, headings, lists)
+- Comments
+- Page properties
+
+## Setup
+
+### 1. Create a Notion integration
+
+1. Go to [notion.so/my-integrations](https://www.notion.so/my-integrations)
+2. Click "New integration"
+3. Name your integration
+4. Select the workspace
+5. Set capabilities to "Read content"
+
+### 2. Share pages with integration
+
+1. Open the page you want to index
+2. Click "Share" in the top right
+3. Invite your integration
+4. Repeat for all pages you want indexed
+
+### 3. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Notion
+3. Enter your Integration Token
+4. Click "Save"
+
+## Permissions
+
+Grapevine respects Notion's sharing permissions:
+
+- Only pages shared with the integration are indexed
+- User permissions from Notion are preserved
+- Private pages remain private
+
+## Webhook setup
+
+For real-time updates:
+
+1. In Grapevine, copy your webhook URL
+2. In Notion integration settings, add webhook URL
+3. Select events: `page.created`, `page.updated`, `page.deleted`
+
+## Supported content types
+
+- Text blocks
+- Headings
+- Lists (bulleted, numbered, toggle)
+- Code blocks
+- Quotes
+- Callouts
+- Tables
+- Database properties
+
+## Limitations
+
+- Embedded content is not indexed
+- Images are not indexed (only alt text)
+- File attachments are not indexed
+- Maximum page size: 10MB
