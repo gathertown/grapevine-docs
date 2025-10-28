@@ -1,0 +1,81 @@
+---
+title: GitHub
+description: Connect GitHub to index repositories, pull requests, and issues
+---
+
+The GitHub connector indexes code, pull requests, issues, and discussions from your repositories.
+
+## What gets indexed
+
+- Repository files (code, markdown, documentation)
+- Pull requests and reviews
+- Issues and comments
+- Discussions
+- README files
+- Wiki pages
+
+## Setup
+
+### 1. Create a GitHub App
+
+1. Go to GitHub Settings > Developer settings > GitHub Apps
+2. Click "New GitHub App"
+3. Configure:
+   - Name: "Grapevine"
+   - Homepage URL: `https://getgrapevine.ai`
+   - Webhook URL: `https://webhooks.getgrapevine.ai/github`
+
+### 2. Set permissions
+
+**Repository permissions:**
+- Contents: Read
+- Issues: Read
+- Pull requests: Read
+- Metadata: Read
+
+### 3. Install the app
+
+1. Install the app to your organization
+2. Select repositories to index
+3. Authorize the installation
+
+### 4. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on GitHub
+3. Enter your GitHub App credentials
+4. Click "Save"
+
+## Permissions
+
+GitHub permissions are preserved:
+
+- Public repositories are searchable by all users
+- Private repositories are only searchable by users with access
+- Organization members see organization repositories
+
+## Webhook events
+
+Grapevine listens for these events:
+
+- `push` - Code changes
+- `pull_request` - PR created/updated
+- `issues` - Issue created/updated
+- `issue_comment` - Comments added
+- `pull_request_review` - PR reviews
+
+## File type support
+
+Indexed file types:
+
+- Source code (`.js`, `.py`, `.go`, `.java`, etc.)
+- Markdown (`.md`)
+- Documentation (`.txt`, `.rst`)
+- Configuration (`.json`, `.yaml`, `.toml`)
+
+## Limitations
+
+- Binary files are not indexed
+- Files larger than 1MB are truncated
+- Maximum 10,000 files per repository
+- Archived repositories are not indexed

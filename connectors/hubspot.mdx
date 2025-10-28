@@ -1,0 +1,79 @@
+---
+title: HubSpot
+description: Connect HubSpot to index contacts, companies, deals, and tickets
+---
+
+The HubSpot connector indexes CRM data including contacts, companies, deals, and tickets.
+
+## What gets indexed
+
+- Contacts
+- Companies
+- Deals
+- Tickets
+- Notes and activities
+- Custom properties
+
+## Setup
+
+### 1. Create a private app
+
+1. In HubSpot, go to Settings > Integrations > Private Apps
+2. Click "Create a private app"
+3. Name your app "Grapevine"
+4. Add scopes:
+   - `crm.objects.contacts.read`
+   - `crm.objects.companies.read`
+   - `crm.objects.deals.read`
+   - `tickets`
+
+### 2. Generate access token
+
+1. Click "Create app"
+2. Copy the access token
+
+### 3. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on HubSpot
+3. Enter your access token
+4. Click "Save"
+
+## Permissions
+
+HubSpot permissions are preserved:
+
+- Users only see records they have access to
+- Team permissions are respected
+- Private records remain private
+
+## Webhook setup
+
+For real-time updates:
+
+1. In HubSpot Settings > Integrations > Webhooks
+2. Create webhook subscriptions for:
+   - `contact.creation`
+   - `contact.propertyChange`
+   - `company.creation`
+   - `company.propertyChange`
+   - `deal.creation`
+   - `deal.propertyChange`
+3. Set target URL to: `https://webhooks.getgrapevine.ai/hubspot`
+
+## Indexed properties
+
+Standard properties:
+- Name, email, phone
+- Company name, domain
+- Deal amount, stage
+- Ticket status, priority
+
+Custom properties are also indexed.
+
+## Limitations
+
+- Maximum 1,000,000 records per object type
+- Deleted records are removed from index
+- Some custom property types may have limited support
+- Attachments larger than 10MB are not indexed

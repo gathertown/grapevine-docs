@@ -1,0 +1,128 @@
+---
+title: Agentic Search MCP
+description: Use Grapevine as a Model Context Protocol server
+---
+
+Grapevine implements the Model Context Protocol (MCP), allowing AI assistants to search your knowledge base.
+
+## Overview
+
+The MCP server exposes Grapevine's search capabilities to AI assistants like Claude, enabling them to query your company's knowledge base during conversations.
+
+## Setup
+
+### Prerequisites
+
+- Grapevine account with MCP access enabled
+- MCP-compatible AI assistant (e.g., Claude Desktop)
+
+### Configuration
+
+Add Grapevine to your MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "grapevine": {
+      "command": "npx",
+      "args": ["-y", "@grapevine/mcp-server"],
+      "env": {
+        "GRAPEVINE_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+
+### Claude Desktop
+
+For Claude Desktop, add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "grapevine": {
+      "command": "npx",
+      "args": ["-y", "@grapevine/mcp-server"],
+      "env": {
+        "GRAPEVINE_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+
+## Available tools
+
+The MCP server exposes these tools to AI assistants:
+
+### search
+
+Search your knowledge base using natural language.
+
+**Parameters:**
+- `query` (string) - The search query
+- `max_results` (integer, optional) - Maximum results to return
+
+**Example:**
+```
+User: What is our pricing strategy?
+Assistant: [Uses search tool with query "pricing strategy"]
+```
+
+### get_document
+
+Retrieve a specific document by ID.
+
+**Parameters:**
+- `document_id` (string) - The document identifier
+
+### semantic_search
+
+Perform semantic similarity search.
+
+**Parameters:**
+- `query` (string) - The search query
+- `filters` (object, optional) - Filter by source, date, etc.
+
+## Usage examples
+
+### Basic search
+
+```
+User: Can you find information about our Q4 roadmap?
+Assistant: [Searches Grapevine and provides answer with citations]
+```
+
+### Filtered search
+
+```
+User: What engineering decisions were made last month?
+Assistant: [Searches with date filter and source filter for GitHub/Linear]
+```
+
+## Security
+
+The MCP server respects all Grapevine permissions:
+
+- Users only see content they have access to
+- API keys are scoped to specific organizations
+- All requests are authenticated and logged
+
+## Troubleshooting
+
+### Connection issues
+
+If the MCP server fails to connect:
+
+1. Verify your API key is correct
+2. Check that MCP access is enabled for your account
+3. Ensure you're using the latest version of the MCP server
+
+### Permission errors
+
+If you receive permission errors:
+
+1. Verify your API key has the correct scopes
+2. Check that your user has access to the requested content
+3. Contact support if issues persist

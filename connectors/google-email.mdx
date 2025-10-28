@@ -1,0 +1,63 @@
+---
+title: Google Email (Gmail)
+description: Connect Gmail to index emails and threads
+---
+
+The Google Email connector indexes emails and threads from Gmail accounts.
+
+## What gets indexed
+
+- Email subject and body
+- Email threads
+- Sender and recipient information
+- Attachments (text extraction)
+- Labels and categories
+
+## Setup
+
+### 1. Enable Gmail API
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create a new project or select existing
+3. Enable Gmail API
+4. Create OAuth 2.0 credentials
+
+### 2. Configure OAuth consent
+
+1. Set up OAuth consent screen
+2. Add scopes:
+   - `https://www.googleapis.com/auth/gmail.readonly`
+   - `https://www.googleapis.com/auth/gmail.metadata`
+
+### 3. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Google Email
+3. Authorize with Google
+4. Configure indexing preferences
+
+## Permissions
+
+- Only emails from connected accounts are indexed
+- Users only see their own emails
+- Shared mailboxes require separate connections
+
+## Webhook setup
+
+Webhooks are automatically configured for real-time updates using Gmail push notifications.
+
+## Filtering
+
+You can configure filters to:
+
+- Exclude specific labels
+- Only index certain senders
+- Set date ranges
+- Exclude spam and trash
+
+## Limitations
+
+- Maximum 500,000 emails per account
+- Attachments larger than 10MB are not indexed
+- Images are not indexed (only alt text)
+- Deleted emails are removed from index

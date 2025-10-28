@@ -1,0 +1,121 @@
+---
+title: Q&A Slackbot
+description: Build a Slack bot that answers questions using Grapevine
+---
+
+This example shows how to build a Slack bot that answers questions by querying Grapevine.
+
+## Overview
+
+The Q&A Slackbot listens for mentions in Slack channels and responds with answers from your company's knowledge base.
+
+## Prerequisites
+
+- A Grapevine account with API access
+- A Slack workspace with admin permissions
+- Node.js 18+ installed
+
+## Setup
+
+### 1. Create a Slack app
+
+1. Go to [api.slack.com/apps](https://api.slack.com/apps)
+2. Click "Create New App"
+3. Choose "From scratch"
+4. Name your app and select your workspace
+
+### 2. Configure bot permissions
+
+Add these OAuth scopes under "OAuth & Permissions":
+
+- `app_mentions:read` - Read mentions
+- `chat:write` - Send messages
+- `channels:history` - Read channel messages
+
+### 3. Install the app
+
+Click "Install to Workspace" and authorize the app.
+
+### 4. Get your tokens
+
+You'll need:
+- Bot User OAuth Token (from OAuth & Permissions)
+- Signing Secret (from Basic Information)
+- Grapevine API Key (from your Grapevine dashboard)
+
+## Implementation
+
+```javascript
+const { App } = require('@slack/bolt');
+
+const app = new App({
+  token: process.env.SLACK_BOT_TOKEN,
+  signingSecret: process.env.SLACK_SIGNING_SECRET
+});
+
+// Listen for app mentions
+app.event('app_mention', async ({ event, client }) => {
+  try {
+    // Extract the question
+    const question = event.text.replace(/<@[A-Z0-9]+>/g, '').trim();
+    
+    // Query Grapevine
+    const response = await fetch('https://api.getgrapevine.ai/v1/ask', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.GRAPEVINE_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ query: question })
+    });
+    
+    const data = await response.json();
+    
+    // Format the response
+    let message = data.answer;
+    if (data.citations && data.citations.length > 0) {
+      message += '\n\n*Sources:*\n';
+      data.citations.forEach(citation => {
+        message += `• <${citation.url}|${citation.title}>\n`;
+      });
+    }
+    
+    // Reply in thread
+    await client.chat.postMessage({
+      channel: event.channel,
+      thread_ts: event.ts,
+      text: message
+    });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+(async () => {
+  await app.start(process.env.PORT || 3000);
+  console.log('⚡️ Bolt app is running!');
+})();
+```
+
+## Running the bot
+
+```bash
+export SLACK_BOT_TOKEN=xoxb-your-token
+export SLACK_SIGNING_SECRET=your-secret
+export GRAPEVINE_API_KEY=your-api-key
+
+node bot.js
+```
+
+## Testing
+
+1. Invite the bot to a channel: `/invite @YourBot`
+2. Mention the bot with a question: `@YourBot What is our pricing strategy?`
+3. The bot will respond with an answer and citations
+
+## Next steps
+
+- Add error handling and retry logic
+- Implement rate limiting
+- Add support for follow-up questions
+- Deploy to a production environment

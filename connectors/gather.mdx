@@ -1,0 +1,63 @@
+---
+title: Gather
+description: Connect Gather to index meeting recordings and transcripts
+---
+
+The Gather connector indexes meeting recordings, transcripts, and notes from your Gather space.
+
+## What gets indexed
+
+- Meeting transcripts
+- Meeting metadata (participants, duration, date)
+- Meeting notes
+- Screen shares (OCR text extraction)
+- Chat messages during meetings
+
+## Setup
+
+### 1. Create API key
+
+1. In Gather, go to Space Settings > API
+2. Create a new API key
+3. Copy the API key
+
+### 2. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Gather
+3. Enter your API key
+4. Click "Save"
+
+## Permissions
+
+Gather permissions are preserved:
+
+- Users only see meetings they participated in
+- Private meetings remain private
+- Space permissions are respected
+
+## Webhook setup
+
+For real-time updates:
+
+1. In Gather Space Settings > Webhooks
+2. Create a new webhook
+3. Set URL to: `https://webhooks.getgrapevine.ai/gather`
+4. Select events:
+   - Meeting ended
+   - Recording available
+
+## Indexed content
+
+- Full meeting transcripts
+- Speaker identification
+- Meeting chat messages
+- Screen share text (OCR)
+- Meeting notes and action items
+
+## Limitations
+
+- Only recorded meetings are indexed
+- Maximum 50,000 meetings
+- Deleted meetings are removed from index
+- Video files are not stored, only transcripts

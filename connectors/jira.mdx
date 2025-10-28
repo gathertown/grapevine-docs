@@ -1,0 +1,81 @@
+---
+title: Jira
+description: Connect Jira to index issues, projects, and comments
+---
+
+The Jira connector indexes issues, projects, and related content from your Atlassian Jira instance.
+
+## What gets indexed
+
+- Issues and sub-tasks
+- Issue descriptions and comments
+- Custom fields
+- Attachments
+- Project metadata
+- Sprint information
+
+## Setup
+
+### 1. Create an API token
+
+1. Go to [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+2. Click "Create API token"
+3. Name your token
+4. Copy the token
+
+### 2. Get your site URL
+
+Your Jira site URL is typically:
+`https://your-domain.atlassian.net`
+
+### 3. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Jira
+3. Enter:
+   - Site URL
+   - Email address
+   - API token
+4. Click "Save"
+
+## Permissions
+
+Jira permissions are preserved:
+
+- Users only see issues they have access to
+- Project permissions are respected
+- Private issues remain private
+
+## Webhook setup
+
+For real-time updates:
+
+1. In Jira, go to Settings > System > Webhooks
+2. Create a new webhook
+3. Set URL to: `https://webhooks.getgrapevine.ai/jira`
+4. Select events:
+   - Issue created
+   - Issue updated
+   - Issue deleted
+   - Comment created
+
+## Indexed fields
+
+Standard fields:
+- Summary
+- Description
+- Status
+- Priority
+- Assignee
+- Reporter
+- Labels
+- Components
+
+Custom fields are also indexed.
+
+## Limitations
+
+- Maximum 50,000 issues per project
+- Archived projects are not indexed
+- Attachments larger than 10MB are not indexed
+- Some custom field types may have limited support

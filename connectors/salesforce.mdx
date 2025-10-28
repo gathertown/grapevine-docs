@@ -1,0 +1,77 @@
+---
+title: Salesforce
+description: Connect Salesforce to index accounts, contacts, opportunities, and cases
+---
+
+The Salesforce connector indexes CRM data including accounts, contacts, opportunities, and cases.
+
+## What gets indexed
+
+- Accounts
+- Contacts
+- Opportunities
+- Cases
+- Leads
+- Custom objects
+- Notes and attachments
+
+## Setup
+
+### 1. Create a Connected App
+
+1. In Salesforce Setup, go to App Manager
+2. Click "New Connected App"
+3. Configure:
+   - Name: "Grapevine"
+   - Contact Email: your email
+   - Enable OAuth Settings
+   - Callback URL: `https://auth.getgrapevine.ai/callback/salesforce`
+
+### 2. Set OAuth scopes
+
+Add these scopes:
+- Access and manage your data (api)
+- Perform requests on your behalf at any time (refresh_token, offline_access)
+- Access your basic information (id, profile, email, address, phone)
+
+### 3. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Salesforce
+3. Authorize with Salesforce
+4. Select objects to index
+
+## Permissions
+
+Salesforce permissions are preserved:
+
+- Users only see records they have access to
+- Sharing rules are respected
+- Private records remain private
+
+## Change Data Capture
+
+For real-time updates, enable Change Data Capture:
+
+1. In Salesforce Setup, go to Change Data Capture
+2. Enable CDC for objects:
+   - Account
+   - Contact
+   - Opportunity
+   - Case
+   - Lead
+
+## Indexed fields
+
+Standard fields for each object are indexed, plus:
+- Custom fields
+- Formula fields
+- Lookup relationships
+- Notes and attachments
+
+## Limitations
+
+- Maximum 1,000,000 records per object
+- Archived records are not indexed
+- Some custom objects may have limited support
+- Large attachments (>10MB) are not indexed
