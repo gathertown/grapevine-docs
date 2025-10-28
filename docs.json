@@ -45,7 +45,6 @@
           "connectors/linear",
           "connectors/google-drive",
           "connectors/google-email",
-          "connectors/salesforce",
           "connectors/hubspot",
           "connectors/gong",
           "connectors/gather"
