@@ -1,0 +1,55 @@
+---
+title: Authentication
+description: Learn how to authenticate with Grapevine's API
+---
+
+Grapevine supports multiple authentication methods depending on your use case.
+
+## API keys
+
+API keys are the recommended method for programmatic access to Grapevine.
+
+### Creating an API key
+
+1. Navigate to the API Keys page in your admin dashboard
+2. Click "Create API Key"
+3. Give your key a descriptive name
+4. Copy the key immediately - it won't be shown again
+
+### Using API keys
+
+Include your API key in the `Authorization` header:
+
+```bash
+curl https://api.grapevine.ai/v1/search \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What is our pricing strategy?"}'
+```
+
+## JWT tokens
+
+For user-specific access, Grapevine supports JWT-based authentication.
+
+### Token format
+
+JWT tokens must include:
+
+- `sub` - User identifier
+- `org_id` - Organization identifier
+- `exp` - Expiration timestamp
+
+### Using JWT tokens
+
+```bash
+curl https://api.grapevine.ai/v1/search \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What is our pricing strategy?"}'
+```
+
+## OAuth (for integrations)
+
+When connecting data sources, Grapevine uses OAuth 2.0 to securely authenticate with third-party services.
+
+The OAuth flow is handled automatically through the admin interface when you connect a new integration.
