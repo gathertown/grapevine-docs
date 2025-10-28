@@ -1,0 +1,73 @@
+---
+title: Slack
+description: Connect Slack to index messages and channels
+---
+
+The Slack connector indexes messages, threads, and channels from your Slack workspace.
+
+## What gets indexed
+
+- Public channel messages
+- Private channel messages (if bot is invited)
+- Direct messages (if bot is invited)
+- Thread replies
+- File attachments and links
+
+## Setup
+
+### 1. Create a Slack app
+
+1. Go to [api.slack.com/apps](https://api.slack.com/apps)
+2. Click "Create New App"
+3. Choose "From scratch"
+4. Name your app and select your workspace
+
+### 2. Configure permissions
+
+Add these OAuth scopes:
+
+**Bot Token Scopes:**
+- `channels:history` - Read public channel messages
+- `channels:read` - View basic channel information
+- `groups:history` - Read private channel messages
+- `groups:read` - View private channels
+- `im:history` - Read direct messages
+- `im:read` - View direct messages
+- `users:read` - View user information
+
+### 3. Install to workspace
+
+Click "Install to Workspace" and authorize the app.
+
+### 4. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Slack
+3. Enter your Bot User OAuth Token
+4. Click "Save"
+
+## Permissions
+
+The Slack connector respects channel permissions:
+
+- Public channels are searchable by all users
+- Private channels are only searchable by members
+- Direct messages are only searchable by participants
+
+## Webhook setup
+
+For real-time updates, configure webhooks:
+
+1. In your Slack app settings, go to "Event Subscriptions"
+2. Enable events
+3. Set Request URL to: `https://webhooks.grapevine.ai/slack`
+4. Subscribe to these bot events:
+   - `message.channels`
+   - `message.groups`
+   - `message.im`
+
+## Limitations
+
+- Messages older than Slack's retention policy cannot be indexed
+- Deleted messages are removed from the index
+- File content is not indexed, only metadata
