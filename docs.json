@@ -7,7 +7,8 @@
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "https://framerusercontent.com/images/H73IKw3Y9rknB1cmRcZBwSB0RxY.png",
+  "faviconDark": "https://framerusercontent.com/images/zS70GDAJJcGjnJWkAvxSNOGrQ3w.png",
   "navigation": {
     "groups": [
       {
