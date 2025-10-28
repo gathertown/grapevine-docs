@@ -1,0 +1,155 @@
+---
+title: Webhooks
+description: Receive real-time notifications about events in Grapevine
+---
+
+Webhooks allow you to receive real-time notifications when events occur in Grapevine.
+
+## Overview
+
+Grapevine can send HTTP POST requests to your specified endpoint when certain events occur, such as:
+
+- Document indexed
+- Document updated
+- Document deleted
+- Query completed
+
+## Creating a webhook
+
+### Via API
+
+```bash
+curl -X POST https://api.grapevine.ai/v1/webhooks \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://your-app.com/webhooks/grapevine",
+    "events": ["document.indexed", "document.updated"],
+    "secret": "your-webhook-secret"
+  }'
+```
+
+### Via dashboard
+
+1. Navigate to Settings > Webhooks
+2. Click "Create Webhook"
+3. Enter your endpoint URL
+4. Select the events you want to receive
+5. Save the webhook
+
+## Webhook payload
+
+All webhook requests include:
+
+```json
+{
+  "event": "document.indexed",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "document_id": "doc_123",
+    "source": "notion",
+    "title": "Product Roadmap Q1 2024",
+    "url": "https://notion.so/product-roadmap"
+  }
+}
+```
+
+## Event types
+
+### document.indexed
+
+Sent when a new document is indexed.
+
+```json
+{
+  "event": "document.indexed",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "document_id": "doc_123",
+    "source": "notion",
+    "title": "Product Roadmap Q1 2024",
+    "url": "https://notion.so/product-roadmap"
+  }
+}
+```
+
+### document.updated
+
+Sent when an existing document is updated.
+
+```json
+{
+  "event": "document.updated",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "document_id": "doc_123",
+    "source": "notion",
+    "changes": ["content", "title"]
+  }
+}
+```
+
+### document.deleted
+
+Sent when a document is deleted.
+
+```json
+{
+  "event": "document.deleted",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "document_id": "doc_123",
+    "source": "notion"
+  }
+}
+```
+
+## Verifying webhooks
+
+Grapevine signs all webhook requests using HMAC-SHA256.
+
+### Signature verification
+
+```javascript
+const crypto = require('crypto');
+
+function verifyWebhook(payload, signature, secret) {
+  const hmac = crypto.createHmac('sha256', secret);
+  const digest = hmac.update(payload).digest('hex');
+  return signature === digest;
+}
+
+// In your webhook handler
+app.post('/webhooks/grapevine', (req, res) => {
+  const signature = req.headers['x-grapevine-signature'];
+  const payload = JSON.stringify(req.body);
+  
+  if (!verifyWebhook(payload, signature, process.env.WEBHOOK_SECRET)) {
+    return res.status(401).send('Invalid signature');
+  }
+  
+  // Process the webhook
+  console.log('Received event:', req.body.event);
+  res.status(200).send('OK');
+});
+```
+
+## Best practices
+
+- Always verify webhook signatures
+- Respond with 200 status code quickly
+- Process webhooks asynchronously
+- Implement retry logic for failed processing
+- Log all webhook events for debugging
+
+## Retry policy
+
+If your endpoint returns a non-2xx status code, Grapevine will retry:
+
+- Immediately
+- After 1 minute
+- After 5 minutes
+- After 15 minutes
+- After 1 hour
+
+After 5 failed attempts, the webhook will be disabled.
