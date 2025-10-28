@@ -60,7 +60,7 @@ app.event('app_mention', async ({ event, client }) => {
     const question = event.text.replace(/<@[A-Z0-9]+>/g, '').trim();
     
     // Query Grapevine
-    const response = await fetch('https://api.grapevine.ai/v1/ask', {
+    const response = await fetch('https://api.getgrapevine.ai/v1/ask', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.GRAPEVINE_API_KEY}`,
