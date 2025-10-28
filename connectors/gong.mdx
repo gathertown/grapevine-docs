@@ -1,0 +1,66 @@
+---
+title: Gong
+description: Connect Gong to index call recordings and transcripts
+---
+
+The Gong connector indexes call recordings, transcripts, and insights from your Gong account.
+
+## What gets indexed
+
+- Call transcripts
+- Call metadata (participants, duration, date)
+- Call topics and keywords
+- Call notes and highlights
+- Action items
+
+## Setup
+
+### 1. Create API credentials
+
+1. In Gong, go to Settings > API
+2. Create a new API key
+3. Copy the API key and secret
+
+### 2. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Gong
+3. Enter:
+   - API key
+   - API secret
+4. Click "Save"
+
+## Permissions
+
+Gong permissions are preserved:
+
+- Users only see calls they have access to
+- Team permissions are respected
+- Private calls remain private
+
+## Webhook setup
+
+For real-time updates:
+
+1. In Gong Settings > API > Webhooks
+2. Create a new webhook
+3. Set URL to: `https://webhooks.grapevine.ai/gong`
+4. Select events:
+   - Call recorded
+   - Call transcribed
+
+## Indexed content
+
+- Full call transcripts
+- Speaker identification
+- Call topics and keywords
+- Mentioned competitors
+- Action items and next steps
+- Call outcome and disposition
+
+## Limitations
+
+- Only transcribed calls are indexed
+- Maximum 100,000 calls
+- Deleted calls are removed from index
+- Recording files are not stored, only transcripts
