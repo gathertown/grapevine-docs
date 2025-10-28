@@ -1,0 +1,73 @@
+---
+title: Confluence
+description: Connect Confluence to index pages and spaces
+---
+
+The Confluence connector indexes pages, spaces, and attachments from your Atlassian Confluence instance.
+
+## What gets indexed
+
+- Pages and child pages
+- Space content
+- Page comments
+- Attachments (PDFs, documents)
+- Page labels and metadata
+
+## Setup
+
+### 1. Create an API token
+
+1. Go to [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+2. Click "Create API token"
+3. Name your token
+4. Copy the token
+
+### 2. Get your site URL
+
+Your Confluence site URL is typically:
+`https://your-domain.atlassian.net/wiki`
+
+### 3. Connect to Grapevine
+
+1. In Grapevine, go to Integrations
+2. Click "Connect" on Confluence
+3. Enter:
+   - Site URL
+   - Email address
+   - API token
+4. Click "Save"
+
+## Permissions
+
+Confluence permissions are respected:
+
+- Users only see pages they have access to
+- Space permissions are preserved
+- Restricted pages remain restricted
+
+## Webhook setup
+
+For real-time updates:
+
+1. In Confluence, go to Settings > Webhooks
+2. Create a new webhook
+3. Set URL to: `https://webhooks.grapevine.ai/confluence`
+4. Select events:
+   - Page created
+   - Page updated
+   - Page removed
+
+## Supported content
+
+- Rich text content
+- Tables
+- Code blocks
+- Macros (expanded content)
+- Attachments (text extraction)
+
+## Limitations
+
+- Maximum page size: 10MB
+- Archived spaces are not indexed
+- Some macros may not be fully indexed
+- Embedded content may have limited indexing
