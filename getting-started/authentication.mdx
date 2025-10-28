@@ -21,7 +21,7 @@ API keys are the recommended method for programmatic access to Grapevine.
 Include your API key in the `Authorization` header:
 
 ```bash
-curl https://api.grapevine.ai/v1/search \
+curl https://api.getgrapevine.ai/v1/search \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"query": "What is our pricing strategy?"}'
@@ -42,7 +42,7 @@ JWT tokens must include:
 ### Using JWT tokens
 
 ```bash
-curl https://api.grapevine.ai/v1/search \
+curl https://api.getgrapevine.ai/v1/search \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"query": "What is our pricing strategy?"}'
