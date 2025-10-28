@@ -1,0 +1,118 @@
+---
+title: Ask Agent endpoint
+description: Query your knowledge base using natural language
+---
+
+The Ask Agent endpoint is Grapevine's primary interface for natural language queries.
+
+## Endpoint
+
+```
+POST https://api.grapevine.ai/v1/ask
+```
+
+## Request
+
+### Headers
+
+- `Authorization: Bearer YOUR_API_KEY` - Your Grapevine API key
+- `Content-Type: application/json`
+
+### Body
+
+```json
+{
+  "query": "What is our pricing strategy?",
+  "filters": {
+    "sources": ["slack", "notion"],
+    "date_range": {
+      "start": "2024-01-01",
+      "end": "2024-12-31"
+    }
+  },
+  "max_results": 5
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `query` | string | Yes | The natural language question |
+| `filters` | object | No | Filter results by source, date, etc. |
+| `max_results` | integer | No | Maximum number of results (default: 5) |
+
+## Response
+
+```json
+{
+  "answer": "Our pricing strategy focuses on value-based pricing...",
+  "citations": [
+    {
+      "id": "doc_123",
+      "title": "Pricing Strategy 2024",
+      "url": "https://notion.so/pricing-strategy",
+      "source": "notion",
+      "snippet": "...relevant excerpt...",
+      "score": 0.95
+    }
+  ],
+  "metadata": {
+    "query_time_ms": 234,
+    "total_results": 3
+  }
+}
+```
+
+### Response fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `answer` | string | The generated answer to the query |
+| `citations` | array | Source documents used to generate the answer |
+| `metadata` | object | Query metadata and statistics |
+
+## Examples
+
+### Basic query
+
+```bash
+curl -X POST https://api.grapevine.ai/v1/ask \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What is our return policy?"
+  }'
+```
+
+### Filtered query
+
+```bash
+curl -X POST https://api.grapevine.ai/v1/ask \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "Recent engineering decisions",
+    "filters": {
+      "sources": ["github", "linear"],
+      "date_range": {
+        "start": "2024-01-01"
+      }
+    }
+  }'
+```
+
+## Error responses
+
+| Status Code | Description |
+|-------------|-------------|
+| 400 | Bad request - invalid parameters |
+| 401 | Unauthorized - invalid API key |
+| 429 | Rate limit exceeded |
+| 500 | Internal server error |
+
+## Rate limits
+
+- Free tier: 100 requests per day
+- Pro tier: 1,000 requests per day
+- Enterprise: Custom limits
