@@ -3,64 +3,57 @@ title: Gong
 description: Connect Gong to index call recordings and transcripts
 ---
 
-The Gong connector indexes call recordings, transcripts, and insights from your Gong account.
+The Gong connector indexes call recordings, transcripts, and permissions from your Gong account.
 
 ## What gets indexed
 
 - Call transcripts
 - Call metadata (participants, duration, date)
-- Call topics and keywords
-- Call notes and highlights
-- Action items
 
 ## Setup
 
-### 1. Create API credentials
+### Connect to Grapevine
 
-1. In Gong, go to Settings > API
-2. Create a new API key
-3. Copy the API key and secret
+1. In Grapevine, go to Integrations and click on Gong 
+2. Click "Connect Gong Account" in Grapevine admin dashboard
+3. Grapevine redirects to Gong OAuth authorization page
+4. Log into Gong (if needed) and reviews permission request and click "Authorize" to grant access
+5. Gong redirects back to Grapevine and initial sync begins automatically
+- Optional: (multi-workspace) The user can choose which workspace permits “public library folder” calls to be public within Grapevine.
+- Optional: The user can configure a webhook in Gong for real-time updates
 
-### 2. Connect to Grapevine
+### Webhook setup
 
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Gong
-3. Enter:
-   - API key
-   - API secret
-4. Click "Save"
+For real-time updates follow the instruction on the integration page:
+
+1. (Grapevine) Copy the Webhook URL:
+   - https://example.ingest.getgrapevine.ai/webhooks/gong
+2. (In Gong) Admin Center → Ecosystem → Automation Rules → Add rule → New rule → Action → Fire Webhook
+3. (In Gong)Select Signed JWT header as the authentication method.
+4. (In Gong) Click Show public key in Gong and copy the entire key.
+ - public key looks like: MIIBIjANBgkqhkiG9w......
+5. (In Gong) Save the rule
+6. (In Gong)Test the webhook
 
 ## Permissions
 
 Gong permissions are preserved:
 
 - Users only see calls they have access to
-- Team permissions are respected
+- Permission profiles are respected
 - Private calls remain private
 
-## Webhook setup
-
-For real-time updates:
-
-1. In Gong Settings > API > Webhooks
-2. Create a new webhook
-3. Set URL to: `https://webhooks.getgrapevine.ai/gong`
-4. Select events:
-   - Call recorded
-   - Call transcribed
 
 ## Indexed content
 
 - Full call transcripts
 - Speaker identification
-- Call topics and keywords
-- Mentioned competitors
-- Action items and next steps
-- Call outcome and disposition
+- Public folders
+- Permission Profiles
+
 
 ## Limitations
 
-- Only transcribed calls are indexed
-- Maximum 100,000 calls
 - Deleted calls are removed from index
 - Recording files are not stored, only transcripts
+- Hourly reindexing to synchronize permissions and calls
