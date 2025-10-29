@@ -7,8 +7,8 @@
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "https://framerusercontent.com/images/H73IKw3Y9rknB1cmRcZBwSB0RxY.png",
-  "faviconDark": "https://framerusercontent.com/images/zS70GDAJJcGjnJWkAvxSNOGrQ3w.png",
+  "favicon": "favicon.svg",
+  "faviconDark": "favicon.svg",
   "navigation": {
     "groups": [
       {
@@ -67,19 +67,18 @@
     "options": [
      "copy",
      "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
+     "mcp"
    ]
+  },
+  "feedback": {
+    "suggestEdit": true,
+    "raiseIssue": true
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/grapevineai",
+      "x": "https://x.com/gather_town",
       "github": "https://github.com/gathertown",
-      "linkedin": "https://linkedin.com/company/grapevine-ai"
+      "linkedin": "https://linkedin.com/company/gathertown"
     }
   }
 }
