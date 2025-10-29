@@ -3,64 +3,71 @@ title: Gong
 description: Connect Gong to index call recordings and transcripts
 ---
 
-The Gong connector indexes call recordings, transcripts, and insights from your Gong account.
+The Gong connector indexes call recordings, transcripts, and permissions from your Gong account.
 
 ## What gets indexed
 
-- Call transcripts
-- Call metadata (participants, duration, date)
-- Call topics and keywords
-- Call notes and highlights
-- Action items
+- **Call transcripts** - Full text of call conversations
+- **Call metadata** - Participants, duration, date, and time
+- **Speaker identification** - Who said what during the call
+- **Public folders** - Calls organized in your Gong public library
+- **Permission profiles** - User access and visibility settings
 
 ## Setup
 
-### 1. Create API credentials
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to **Integrations** and click on **Gong**
+    2. Click **Connect Gong Account**
+    3. Log into Gong (if needed) and review the permission request
+    4. Click **Authorize** to grant access
+    5. You will be redirected back to Grapevine
+  </Step>
 
-1. In Gong, go to Settings > API
-2. Create a new API key
-3. Copy the API key and secret
+  <Step title="Configure workspace access (multi-workspace only)">
+    If you have multiple workspaces, you can choose which workspace permits "public library folder" calls to be public within Grapevine. The initial sync begins automatically after this configuration.
+  </Step>
 
-### 2. Connect to Grapevine
+  <Step title="Configure webhook (optional)">
+    For real-time updates, configure webhooks in Gong:
 
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Gong
-3. Enter:
-   - API key
-   - API secret
-4. Click "Save"
+    1. In Grapevine, copy your Webhook URL from the integration page
+    2. In Gong, go to **Admin Center** → **Ecosystem** → **Automation Rules**
+    3. Click **Add rule** → **New rule** → **Action** → **Fire Webhook**
+    4. Paste your webhook URL: `https://example.ingest.getgrapevine.ai/webhooks/gong`
+    5. Select **Signed JWT header** as the authentication method
+    6. Click **Show public key** in Gong and copy the entire key
+    7. Save the rule
+    8. Test the webhook to verify it's working
+  </Step>
+</Steps>
 
 ## Permissions
 
-Gong permissions are preserved:
+The Gong connector respects Gong permissions:
 
-- Users only see calls they have access to
-- Team permissions are respected
+- Users only see calls they have access to in Gong
+- Permission profiles are respected
 - Private calls remain private
 
-## Webhook setup
+## Sync behavior
 
-For real-time updates:
+<Note>
+  Permissions and calls are synchronized hourly to ensure your Grapevine index stays up to date with changes in Gong.
+</Note>
 
-1. In Gong Settings > API > Webhooks
-2. Create a new webhook
-3. Set URL to: `https://webhooks.getgrapevine.ai/gong`
-4. Select events:
-   - Call recorded
-   - Call transcribed
-
-## Indexed content
-
-- Full call transcripts
-- Speaker identification
-- Call topics and keywords
-- Mentioned competitors
-- Action items and next steps
-- Call outcome and disposition
+- **Initial sync** - Begins automatically after authorization
+- **Ongoing syncs** - Runs every hour to capture new calls and permission changes
+- **Deletions** - Deleted calls are removed from the index during the next sync
+- **Real-time updates** - Available via webhook configuration (see setup above)
 
 ## Limitations
 
-- Only transcribed calls are indexed
-- Maximum 100,000 calls
-- Deleted calls are removed from index
-- Recording files are not stored, only transcripts
+<CardGroup cols={2}>
+  <Card title="No recording files" icon="file-video">
+    Recording files are not stored in Grapevine - only transcripts are indexed for search.
+  </Card>
+  <Card title="Transcript-only search" icon="file-lines">
+    Search is limited to transcript content. Audio analysis and recording playback are not available.
+  </Card>
+</CardGroup>
