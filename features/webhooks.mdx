@@ -85,4 +85,4 @@ If your endpoint returns a non-2xx status code, Grapevine will retry:
 - After 15 minutes
 - After 1 hour
 
-After 5 failed attempts, the webhook will be disabled.
+After the final retry attempt, Grapevine will stop retrying.
