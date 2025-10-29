@@ -1,5 +1,5 @@
 ---
-title: Agentic Search MCP
+title: MCP API
 description: Use Grapevine as a Model Context Protocol server
 ---
 
@@ -13,21 +13,26 @@ The MCP server exposes Grapevine's search capabilities to AI assistants like Cla
 
 ### Prerequisites
 
-- Grapevine account with MCP access enabled
+- Grapevine account with an API key
 - MCP-compatible AI assistant (e.g., Claude Desktop)
 
 ### Configuration
 
-Add Grapevine to your MCP configuration:
+Grapevine runs as a remote MCP server at:
+
+```
+https://mcp.getgrapevine.ai
+```
+
+Add Grapevine to your MCP client configuration with your API key:
 
 ```json
 {
   "mcpServers": {
     "grapevine": {
-      "command": "npx",
-      "args": ["-y", "@grapevine/mcp-server"],
-      "env": {
-        "GRAPEVINE_API_KEY": "your-api-key"
+      "url": "https://mcp.getgrapevine.ai",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
       }
     }
   }
@@ -42,15 +47,16 @@ For Claude Desktop, add to `~/Library/Application Support/Claude/claude_desktop_
 {
   "mcpServers": {
     "grapevine": {
-      "command": "npx",
-      "args": ["-y", "@grapevine/mcp-server"],
-      "env": {
-        "GRAPEVINE_API_KEY": "your-api-key"
+      "url": "https://mcp.getgrapevine.ai",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
       }
     }
   }
 }
 ```
+
+Replace `YOUR_API_KEY` with your actual API key from the Grapevine admin dashboard.
 
 ## Available tools
 
@@ -103,10 +109,10 @@ Assistant: [Searches with date filter and source filter for GitHub/Linear]
 
 ## Security
 
-The MCP server respects all Grapevine permissions:
+The MCP server requires authentication via API key:
 
-- Users only see content they have access to
-- API keys are scoped to specific organizations
+- All requests must include a valid API key
+- API keys provide access to all content in your organization
 - All requests are authenticated and logged
 
 ## Troubleshooting
@@ -115,14 +121,15 @@ The MCP server respects all Grapevine permissions:
 
 If the MCP server fails to connect:
 
-1. Verify your API key is correct
-2. Check that MCP access is enabled for your account
-3. Ensure you're using the latest version of the MCP server
+1. Verify your API key is correct and properly formatted in the configuration
+2. Ensure the URL is set to `https://mcp.getgrapevine.ai`
+3. Check that your API key hasn't been revoked in the admin dashboard
 
-### Permission errors
+### Authentication errors
 
-If you receive permission errors:
+If you receive authentication errors:
 
-1. Verify your API key has the correct scopes
-2. Check that your user has access to the requested content
-3. Contact support if issues persist
+1. Verify your API key is included in the `Authorization` header
+2. Ensure the API key format is correct: `Bearer YOUR_API_KEY`
+3. Check that your API key hasn't expired or been deleted
+4. Contact support if issues persist

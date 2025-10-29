@@ -3,53 +3,116 @@ title: Authentication
 description: Learn how to authenticate with Grapevine's API
 ---
 
-Grapevine supports multiple authentication methods depending on your use case.
+Grapevine uses API keys for authentication. API keys provide programmatic access to both the REST API and MCP protocol.
 
-## API keys
+## Creating an API key
 
-API keys are the recommended method for programmatic access to Grapevine.
+To create a new API key:
 
-### Creating an API key
+1. Open the [API Keys page](https://app.getgrapevine.ai/api-keys) in the Grapevine admin dashboard
+2. Click **Create API Key**
+3. Give your key a descriptive name (e.g., "Production Integration", "Development")
+4. Click **Create**
+5. **Copy the key immediately** - it will only be shown once
 
-1. Navigate to the API Keys page in your admin dashboard
-2. Click "Create API Key"
-3. Give your key a descriptive name
-4. Copy the key immediately - it won't be shown again
+<Warning>
+  API keys are shown only once at creation. Store them securely - you won't be able to see them again.
+</Warning>
 
-### Using API keys
+## Using API keys
 
-Include your API key in the `Authorization` header:
+API keys work with both Grapevine's [REST API](/features/rest-api) and [MCP API](/features/mcp-api). API keys are currently team-scoped, and only have access to public information in your tenant. For more information on public vs private data, see [Privacy](/getting-started/security-privacy)
+
+### REST API
+
+Include your API key in the `Authorization` header as a Bearer token:
 
 ```bash
-curl https://api.getgrapevine.ai/v1/search \
+curl https://api.getgrapevine.ai/v1/ask \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"query": "What is our pricing strategy?"}'
 ```
 
-## JWT tokens
+See the [REST API documentation](/features/rest-api) for complete endpoint details.
 
-For user-specific access, Grapevine supports JWT-based authentication.
+### MCP Protocol
 
-### Token format
+Grapevine runs as a remote MCP server. Configure your MCP client to connect to:
 
-JWT tokens must include:
-
-- `sub` - User identifier
-- `org_id` - Organization identifier
-- `exp` - Expiration timestamp
-
-### Using JWT tokens
-
-```bash
-curl https://api.getgrapevine.ai/v1/search \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "What is our pricing strategy?"}'
+```
+https://mcp.getgrapevine.ai
 ```
 
-## OAuth (for integrations)
+Include your API key in the Authorization header. Example configuration for Claude Desktop:
 
-When connecting data sources, Grapevine uses OAuth 2.0 to securely authenticate with third-party services.
+```json
+{
+  "mcpServers": {
+    "grapevine": {
+      "url": "https://mcp.getgrapevine.ai",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
 
-The OAuth flow is handled automatically through the admin interface when you connect a new integration.
+See the [MCP API documentation](/features/mcp-api) for complete protocol details and available tools.
+
+## Managing API keys
+
+### Viewing keys
+
+You can view all your API keys on the [API Keys page](https://app.getgrapevine.ai/api-keys). The list shows:
+- Key name
+- Partial key (prefix only)
+- Creation date
+- Last used date
+
+### Revoking keys
+
+To revoke an API key:
+
+1. Open the [API Keys page](https://app.getgrapevine.ai/api-keys)
+2. Find the key you want to revoke
+3. Click the **Delete** button
+
+Revoked keys stop working immediately.
+
+## Security best practices
+
+<CardGroup cols={2}>
+  <Card title="Store securely" icon="lock">
+    Store API keys in environment variables or secure credential management systems. Never commit them to version control.
+  </Card>
+  <Card title="Use descriptive names" icon="tag">
+    Name keys based on their purpose or environment to make management easier.
+  </Card>
+  <Card title="Rotate regularly" icon="rotate">
+    Keys don't expire - make sure you rotate them if there is ever a chance they are compromised (such as team changes).
+  </Card>
+  <Card title="Limit exposure" icon="eye-slash">
+    Only share keys with team members who need them. Create separate keys for different uses.
+  </Card>
+</CardGroup>
+
+## Next steps
+
+<Columns cols={2}>
+  <Card
+    title="Explore the REST API"
+    icon="terminal"
+    href="/features/rest-api"
+  >
+    Review request formats, endpoints, and examples for building against Grapevine.
+  </Card>
+  <Card
+    title="Connect via MCP"
+    icon="plug"
+    href="/features/mcp-api"
+  >
+    Configure your MCP client and discover the available remote tools.
+  </Card>
+</Columns>

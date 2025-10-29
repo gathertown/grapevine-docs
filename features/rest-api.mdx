@@ -1,0 +1,64 @@
+---
+title: REST API
+description: Query your knowledge base using natural language via REST
+---
+
+The REST API provides a single HTTP endpoint, used for querying your knowledge base with natural language. This endpoint is a wrapper around the MCP `ask_agent` tool. For full protocol access with additional tools like `semantic_search`, `keyword_search`, and `get_document`, see the [MCP API documentation](/features/mcp-api).
+
+<Note>
+  Since this endpoint is a wrapper over the MCP `ask_agent` tool, the latency may be high for each request - assume 60+ seconds in your application.
+</Note>
+
+## Endpoint
+
+```
+POST https://api.getgrapevine.ai/v1/ask
+```
+
+## Request
+
+### Headers
+
+- `Authorization: Bearer YOUR_API_KEY` - Your Grapevine API key
+- `Content-Type: application/json`
+
+### Body
+
+```json
+{
+  "query": "What is our pricing strategy?"
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `query` | string | Yes | The natural language question |
+
+## Response
+
+```json
+{
+  "answer": "Our pricing strategy focuses on value-based pricing... [[1]](https://notion.so/pricing-strategy) [[2]](https://docs.google.com/document/d/xyz)"
+}
+```
+
+### Response fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `answer` | string | The generated answer with inline citations as numbered markdown links `[[N]](url)` |
+
+## Examples
+
+### Basic query
+
+```bash
+curl -X POST https://api.getgrapevine.ai/v1/ask \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What is our return policy?"
+  }'
+```

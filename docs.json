@@ -21,17 +21,11 @@
         ]
       },
       {
-        "group": "Examples",
-        "pages": [
-          "examples/qa-slackbot"
-        ]
-      },
-      {
         "group": "Features",
         "pages": [
-          "features/ask-agent",
-          "features/webhooks",
-          "features/agentic-search-mcp"
+          "features/rest-api",
+          "features/mcp-api",
+          "features/webhooks"
         ]
       },
       {
