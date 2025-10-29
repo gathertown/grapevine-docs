@@ -7,17 +7,23 @@ Grapevine uses API keys for authentication. API keys provide programmatic access
 
 ## Creating an API key
 
-To create a new API key:
+<Steps>
+  <Step title="Open API Keys page">
+    Navigate to the [API Keys page](https://app.getgrapevine.ai/api-keys) in the Grapevine admin dashboard.
+  </Step>
 
-1. Open the [API Keys page](https://app.getgrapevine.ai/api-keys) in the Grapevine admin dashboard
-2. Click **Create API Key**
-3. Give your key a descriptive name (e.g., "Production Integration", "Development")
-4. Click **Create**
-5. **Copy the key immediately** - it will only be shown once
+  <Step title="Create new key">
+    Click **Create API Key** and give your key a descriptive name (e.g., "Production Integration", "Development").
+  </Step>
 
-<Warning>
-  API keys are shown only once at creation. Store them securely - you won't be able to see them again.
-</Warning>
+  <Step title="Save your key">
+    Click **Create**, then **copy the key immediately** - it will only be shown once.
+
+    <Warning>
+      API keys are shown only once at creation. Store them securely - you won't be able to see them again.
+    </Warning>
+  </Step>
+</Steps>
 
 ## Using API keys
 
@@ -73,11 +79,15 @@ You can view all your API keys on the [API Keys page](https://app.getgrapevine.a
 
 ### Revoking keys
 
-To revoke an API key:
+<Steps>
+  <Step title="Open API Keys page">
+    Navigate to the [API Keys page](https://app.getgrapevine.ai/api-keys).
+  </Step>
 
-1. Open the [API Keys page](https://app.getgrapevine.ai/api-keys)
-2. Find the key you want to revoke
-3. Click the **Delete** button
+  <Step title="Find and delete">
+    Find the key you want to revoke and click the **Delete** button.
+  </Step>
+</Steps>
 
 Revoked keys stop working immediately.
 
@@ -98,7 +108,7 @@ Revoked keys stop working immediately.
   </Card>
 </CardGroup>
 
-## Next steps
+## Ready to get building?
 
 <Columns cols={2}>
   <Card
@@ -106,13 +116,20 @@ Revoked keys stop working immediately.
     icon="terminal"
     href="/features/rest-api"
   >
-    Review request formats, endpoints, and examples for building against Grapevine.
+    Get started quickly with our simple REST API to ask questions of your Company Context
   </Card>
   <Card
-    title="Connect via MCP"
+    title="Build an Agent with MCP"
     icon="plug"
     href="/features/mcp-api"
   >
-    Configure your MCP client and discover the available remote tools.
+    Give your agents powerful tools to explore your Company Context
+  </Card>
+  <Card
+    title="Get real-time updates with Webhooks"
+    icon="webhook"
+    href="/features/webhooks"
+  >
+    Run workflows every time your Company Context changes
   </Card>
 </Columns>
