@@ -11,20 +11,7 @@ Grapevine can send HTTP POST requests to your specified endpoint when documents 
 
 ## Creating a webhook
 
-### Via API
-
-```bash
-curl -X POST https://api.getgrapevine.ai/v1/webhooks \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://your-app.com/webhooks/grapevine",
-    "events": ["document.indexed", "document.updated"],
-    "secret": "your-webhook-secret"
-  }'
-```
-
-### Via dashboard
+Webhooks can only be created through the dashboard.
 
 1. Navigate to Settings > Webhooks
 2. Click "Create Webhook"
