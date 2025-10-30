@@ -3,7 +3,7 @@ title: HubSpot
 description: Connect HubSpot to index contacts, companies, deals, and tickets
 ---
 
-The HubSpot connector indexes CRM data including contacts, companies, deals, and tickets.
+The HubSpot connector indexes CRM data including contacts, companies, deals, and tickets from your HubSpot account.
 
 ## What gets indexed
 
@@ -11,69 +11,52 @@ The HubSpot connector indexes CRM data including contacts, companies, deals, and
 - Companies
 - Deals
 - Tickets
-- Notes and activities
+- Deal activities (emails, meetings, calls, notes, tasks)
 - Custom properties
 
 ## Setup
 
-### 1. Create a private app
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **HubSpot**
+    2. Click **Connect HubSpot Account**
+    3. You'll be redirected to HubSpot for authorization
+  </Step>
 
-1. In HubSpot, go to Settings > Integrations > Private Apps
-2. Click "Create a private app"
-3. Name your app "Grapevine"
-4. Add scopes:
-   - `crm.objects.contacts.read`
-   - `crm.objects.companies.read`
-   - `crm.objects.deals.read`
-   - `tickets`
+  <Step title="Authorize the app">
+    1. Log into HubSpot (if needed)
+    2. Review the requested permissions
+    3. Click **Connect app** to authorize
+    4. You'll be redirected back to Grapevine
+  </Step>
 
-### 2. Generate access token
-
-1. Click "Create app"
-2. Copy the access token
-
-### 3. Connect to Grapevine
-
-1. In Grapevine, go to Integrations
-2. Click "Connect" on HubSpot
-3. Enter your access token
-4. Click "Save"
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your HubSpot data. The initial sync indexes the last 3 years of data and may take time depending on the amount of data in your account.
+  </Step>
+</Steps>
 
 ## Permissions
 
-HubSpot permissions are preserved:
+The HubSpot connector requires read access to:
 
-- Users only see records they have access to
-- Team permissions are respected
-- Private records remain private
+- Contacts
+- Companies
+- Deals
+- Tickets
+- Email and communication activities
 
-## Webhook setup
+## Sync behavior
 
-For real-time updates:
+<Note>
+  The connector uses dual sync: real-time webhooks for immediate updates and a periodic sync every 20 minutes as a safety net.
+</Note>
 
-1. In HubSpot Settings > Integrations > Webhooks
-2. Create webhook subscriptions for:
-   - `contact.creation`
-   - `contact.propertyChange`
-   - `company.creation`
-   - `company.propertyChange`
-   - `deal.creation`
-   - `deal.propertyChange`
-3. Set target URL to: `https://webhooks.getgrapevine.ai/hubspot`
-
-## Indexed properties
-
-Standard properties:
-- Name, email, phone
-- Company name, domain
-- Deal amount, stage
-- Ticket status, priority
-
-Custom properties are also indexed.
+- **Initial sync** - Indexes the last 3 years of data
+- **Real-time updates** - Webhooks provide immediate updates for changes
+- **Periodic sync** - Runs every 20 minutes to catch any missed updates
+- **Deletions** - Deleted records are removed from the index automatically
 
 ## Limitations
 
-- Maximum 1,000,000 records per object type
-- Deleted records are removed from index
-- Some custom property types may have limited support
-- Attachments larger than 10MB are not indexed
+- Initial backfill limited to last 3 years of data
+- All deals, contacts, companies, and tickets are indexed (no selective filtering)

@@ -3,64 +3,71 @@ title: Linear
 description: Connect Linear to index issues, projects, and comments
 ---
 
-The Linear connector indexes issues, projects, and related content from your Linear workspace.
+The Linear connector indexes issues, comments, and related content from your Linear workspace.
 
 ## What gets indexed
 
-- Issues and sub-issues
-- Issue descriptions and comments
-- Projects and milestones
-- Labels and custom fields
-- Issue relationships
+- Issues
+- Comments
+- Labels
+- Projects
+- Teams (public only)
+- Issue metadata
+
+<Note>
+  Only issues from public teams are indexed. Private teams are excluded to respect team privacy settings.
+</Note>
 
 ## Setup
 
-### 1. Create an API key
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Linear**
+    2. Click the link to open **Linear Settings → Security & Access**
+    3. Create a new API key with **Read permissions**
+    4. Copy the API key (starts with `lin_api_`)
+  </Step>
 
-1. Go to Linear Settings > API
-2. Click "Create new key"
-3. Name your key
-4. Copy the key
+  <Step title="Enter API key">
+    1. Return to the Grapevine integration page
+    2. Paste your Linear API key
+    3. Click **Save**
+  </Step>
 
-### 2. Connect to Grapevine
+  <Step title="Configure webhook">
+    1. Click the link to open **Linear Settings → API**
+    2. Create a new webhook with URL: `https://[your-tenant].ingest.getgrapevine.ai/webhooks/linear`
+    3. Select events: **Comments**, **Users**, **Issues**, **Projects**
+    4. Copy the signing secret
+    5. Return to Grapevine and paste the signing secret
+    6. Click **Save**
+  </Step>
 
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Linear
-3. Enter your API key
-4. Click "Save"
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Linear issues and comments. The initial sync may take time depending on the number of issues in your workspace.
+  </Step>
+</Steps>
 
 ## Permissions
 
-Linear permissions are respected:
+The Linear connector respects Linear permissions:
 
-- Users only see issues from teams they're members of
-- Private teams remain private
-- Guest access is preserved
+- Only public teams are indexed (private teams are excluded)
+- API key has access only to teams and issues visible to the key owner
+- Archived issues are not indexed by default
 
-## Webhook setup
+## Sync behavior
 
-For real-time updates:
+<Note>
+  The initial indexing process may take time depending on the number of issues in your workspace. Real-time updates are configured automatically via webhooks.
+</Note>
 
-1. In Linear Settings > API > Webhooks
-2. Create a new webhook
-3. Set URL to: `https://webhooks.getgrapevine.ai/linear`
-4. Select events:
-   - Issue created
-   - Issue updated
-   - Issue deleted
-   - Comment created
-
-## Indexed content
-
-- Issue title and description
-- Comments and reactions
-- Status and priority
-- Assignee and creator
-- Labels and estimates
-- Project and cycle information
+- **Initial sync** - Begins automatically after setup completion
+- **Ongoing syncs** - Real-time updates via webhooks keep your index current
+- **Deletions** - Deleted issues are removed from the index automatically
 
 ## Limitations
 
-- Maximum 100,000 issues per workspace
+- Only public teams are indexed (private teams are excluded)
 - Archived issues are not indexed by default
 - Attachments are not indexed (only metadata)

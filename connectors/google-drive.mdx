@@ -3,7 +3,7 @@ title: Google Drive
 description: Connect Google Drive to index documents, sheets, and files
 ---
 
-The Google Drive connector indexes documents, spreadsheets, presentations, and other files from Google Drive.
+The Google Drive connector indexes documents, spreadsheets, presentations, and other files from Google Drive using service account authentication with domain-wide delegation.
 
 ## What gets indexed
 
@@ -12,56 +12,66 @@ The Google Drive connector indexes documents, spreadsheets, presentations, and o
 - Google Slides
 - PDFs
 - Text files
-- Markdown files
-- File metadata and comments
+
+<Note>
+  Only files with domain-wide read access are indexed.
+</Note>
 
 ## Setup
 
-### 1. Enable Google Drive API
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Google Drive**
+    2. A service account will be automatically created for your organization
+    3. Note the **Client ID** displayed on the screen
+  </Step>
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project or select existing
-3. Enable Google Drive API
-4. Create OAuth 2.0 credentials
+  <Step title="Configure domain-wide delegation">
+    1. Go to [Google Workspace Admin Console](https://admin.google.com/ac/owl/domainwidedelegation)
+    2. Click **Add new** to create a new API client
+    3. Enter the **Client ID** from Step 1
+    4. Add the following OAuth scopes (comma-separated):
+       ```
+       https://www.googleapis.com/auth/drive.readonly,
+       https://www.googleapis.com/auth/admin.directory.user.readonly,
+       https://www.googleapis.com/auth/admin.directory.group.readonly
+       ```
+    5. Click **Authorize**
+  </Step>
 
-### 2. Configure OAuth consent
+  <Step title="Enter admin email">
+    1. Return to the Grapevine integration page
+    2. Enter your Google Workspace admin email address
+    3. Click **Save Configuration**
+  </Step>
 
-1. Set up OAuth consent screen
-2. Add scopes:
-   - `https://www.googleapis.com/auth/drive.readonly`
-   - `https://www.googleapis.com/auth/drive.metadata.readonly`
-
-### 3. Connect to Grapevine
-
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Google Drive
-3. Authorize with Google
-4. Select drives to index
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Google Drive content. The initial sync may take time depending on the size of your Google Workspace.
+  </Step>
+</Steps>
 
 ## Permissions
 
-Google Drive permissions are preserved:
+The Google Drive connector uses domain-wide delegation to access files:
 
-- Users only see files they have access to
-- Shared drive permissions are respected
-- Private files remain private
+- Only files with domain-wide read access are indexed
+- Files must be accessible to your entire workspace domain
+- Private files (visible only to specific users) are excluded
+- Files shared only with specific people/groups are excluded
 
-## Webhook setup
+## Sync behavior
 
-Webhooks are automatically configured during setup for real-time updates.
+<Note>
+  The initial indexing process may take time depending on the size of your Google Workspace. Real-time updates are configured automatically.
+</Note>
 
-## Supported file types
-
-- Google Docs (`.gdoc`)
-- Google Sheets (`.gsheet`)
-- Google Slides (`.gslide`)
-- PDF (`.pdf`)
-- Text files (`.txt`, `.md`)
-- Microsoft Office files (`.docx`, `.xlsx`, `.pptx`)
+- **Initial sync** - Begins automatically after setup completion
+- **Ongoing syncs** - Real-time updates keep your index current with changes
+- **Deletions** - Deleted files are removed from the index automatically
 
 ## Limitations
 
-- Files larger than 10MB are truncated
-- Binary files are not indexed
-- Embedded objects may have limited indexing
-- Maximum 100,000 files per drive
+- Only files with domain-wide read access are indexed
+- Files owned by suspended user accounts are not indexed
+- Folders are not indexed as separate entities
+- Trashed files are automatically excluded from indexing

@@ -1,63 +1,75 @@
 ---
-title: Google Email (Gmail)
+title: Gmail
 description: Connect Gmail to index emails and threads
 ---
 
-The Google Email connector indexes emails and threads from Gmail accounts.
+The Gmail connector indexes emails and threads from Google Workspace accounts using service account authentication with domain-wide delegation. Personal Gmail accounts are not supported.
 
 ## What gets indexed
 
-- Email subject and body
+- Email subjects and bodies
 - Email threads
 - Sender and recipient information
-- Attachments (text extraction)
-- Labels and categories
+- Labels
+- Email metadata
+
+<Note>
+  Emails remain private and are only searchable by the users who sent or received them.
+</Note>
 
 ## Setup
 
-### 1. Enable Gmail API
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Gmail**
+    2. A service account and Pub/Sub topic will be automatically created for your organization
+    3. Note the **Client ID** displayed on the screen
+  </Step>
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project or select existing
-3. Enable Gmail API
-4. Create OAuth 2.0 credentials
+  <Step title="Configure domain-wide delegation">
+    1. Go to [Google Workspace Admin Console](https://admin.google.com/ac/owl/domainwidedelegation)
+    2. Click **Add new** to create a new API client
+    3. Enter the **Client ID** from Step 1
+    4. Add the following OAuth scopes (comma-separated):
+       ```
+       https://www.googleapis.com/auth/gmail.readonly,
+       https://www.googleapis.com/auth/admin.directory.user.readonly,
+       https://www.googleapis.com/auth/admin.directory.group.readonly
+       ```
+    5. Click **Authorize**
+  </Step>
 
-### 2. Configure OAuth consent
+  <Step title="Enter admin email">
+    1. Return to the Grapevine integration page
+    2. Enter your Google Workspace admin email address
+    3. Click **Save Configuration**
+  </Step>
 
-1. Set up OAuth consent screen
-2. Add scopes:
-   - `https://www.googleapis.com/auth/gmail.readonly`
-   - `https://www.googleapis.com/auth/gmail.metadata`
-
-### 3. Connect to Grapevine
-
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Google Email
-3. Authorize with Google
-4. Configure indexing preferences
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Gmail content. The initial sync may take time depending on the size of your organization.
+  </Step>
+</Steps>
 
 ## Permissions
 
-- Only emails from connected accounts are indexed
-- Users only see their own emails
-- Shared mailboxes require separate connections
+The Gmail connector uses domain-wide delegation to access emails:
 
-## Webhook setup
+- Service account impersonates each user to access their emails
+- Only works with Google Workspace accounts (not personal Gmail)
+- Requires Google Workspace admin privileges to configure
 
-Webhooks are automatically configured for real-time updates using Gmail push notifications.
+## Sync behavior
 
-## Filtering
+<Note>
+  The initial indexing process may take time depending on the size of your organization. Real-time updates are configured automatically via Gmail push notifications.
+</Note>
 
-You can configure filters to:
-
-- Exclude specific labels
-- Only index certain senders
-- Set date ranges
-- Exclude spam and trash
+- **Initial sync** - Begins automatically after setup completion
+- **Ongoing syncs** - Real-time updates via Gmail push notifications keep your index current
+- **Webhook refresh** - Notification channels refresh automatically every 7 days
 
 ## Limitations
 
-- Maximum 500,000 emails per account
-- Attachments larger than 10MB are not indexed
-- Images are not indexed (only alt text)
-- Deleted emails are removed from index
+- Only emails from the last 90 days are indexed
+- Only Inbox and Sent folders are indexed
+- Only Google Workspace accounts are supported (personal Gmail accounts are not supported)

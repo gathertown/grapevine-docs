@@ -1,73 +1,90 @@
 ---
 title: Slack
-description: Connect Slack to index messages and channels
+description: Connect Slack to index messages and enable Q&A
 ---
 
-The Slack connector indexes messages, threads, and channels from your Slack workspace.
+The Slack connector indexes messages from your Slack workspace and powers the Grapevine AI bot that answers questions directly in Slack.
 
 ## What gets indexed
 
 - Public channel messages
-- Private channel messages (if bot is invited)
-- Direct messages (if bot is invited)
-- Thread replies
-- File attachments and links
+- Direct messages (from historical exports only)
+
+<Note>
+  Private messages stay private, and are only searchable by the users who sent or received them.
+</Note>
 
 ## Setup
 
-### 1. Create a Slack app
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Slack**
+    2. Click **Create Slack App** to automatically generate your Slack app with pre-configured settings
+    3. Install the app to your Slack workspace when prompted
+    4. Authorize the requested permissions
+  </Step>
 
-1. Go to [api.slack.com/apps](https://api.slack.com/apps)
-2. Click "Create New App"
-3. Choose "From scratch"
-4. Name your app and select your workspace
+  <Step title="Enter app credentials">
+    1. Return to the Grapevine integration page
+    2. From your Slack app settings, copy:
+       - **Client ID**
+       - **Client Secret**
+       - **Signing Secret**
+    3. Paste these values in Grapevine and click **Save**
+  </Step>
 
-### 2. Configure permissions
+  <Step title="Install to workspace">
+    1. Click **Install to Workspace** in Grapevine
+    2. Complete the OAuth authorization flow
+    3. The bot will be added to your Slack workspace
+  </Step>
 
-Add these OAuth scopes:
+  <Step title="Upload historical data">
+    1. Export your Slack workspace data from **Slack Settings → Import/Export Data**
+    2. Upload the ZIP file to Grapevine
+    3. Historical messages will be indexed automatically
+  </Step>
 
-**Bot Token Scopes:**
-- `channels:history` - Read public channel messages
-- `channels:read` - View basic channel information
-- `groups:history` - Read private channel messages
-- `groups:read` - View private channels
-- `im:history` - Read direct messages
-- `im:read` - View direct messages
-- `users:read` - View user information
-
-### 3. Install to workspace
-
-Click "Install to Workspace" and authorize the app.
-
-### 4. Connect to Grapevine
-
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Slack
-3. Enter your Bot User OAuth Token
-4. Click "Save"
+  <Step title="Indexing begins">
+    Grapevine will begin indexing your Slack messages. The bot is now ready to answer questions in Slack channels and direct messages.
+  </Step>
+</Steps>
 
 ## Permissions
 
-The Slack connector respects channel permissions:
+The Slack bot requires these permissions:
 
-- Public channels are searchable by all users
-- Private channels are only searchable by members
-- Direct messages are only searchable by participants
+- Read public channel messages and history
+- Send messages and replies
+- Read user information
+- Join public channels
+- React to messages
 
-## Webhook setup
+## How the bot works
 
-For real-time updates, configure webhooks:
+### Asking questions
 
-1. In your Slack app settings, go to "Event Subscriptions"
-2. Enable events
-3. Set Request URL to: `https://webhooks.getgrapevine.ai/slack`
-4. Subscribe to these bot events:
-   - `message.channels`
-   - `message.groups`
-   - `message.im`
+The bot responds when:
+- Someone mentions the bot with `@BotName`
+- Someone sends a direct message to the bot
+- Someone replies in a thread where the bot has responded
+
+### Bot configuration
+
+You can configure:
+- **Bot name** - Customize the bot's display name
+- **Channel access** - Choose whether the bot answers in all channels or only specific ones
+- **Excluded channels** - Prevent the bot from responding in certain channels
+
+## Sync behavior
+
+- **Initial sync** - Begins after historical export upload (if provided)
+- **Ongoing syncs** - Real-time indexing of new messages via Slack events
+- **Deletions** - Deleted messages are removed from the index automatically
 
 ## Limitations
 
-- Messages older than Slack's retention policy cannot be indexed
-- Deleted messages are removed from the index
-- File content is not indexed, only metadata
+- Real-time indexing only captures public channel messages
+- Direct messages require historical export upload and are only used as bot context (not searchable)
+- File content is not indexed (only metadata)
+- The bot does not respond to guest users or external Slack Connect channels
