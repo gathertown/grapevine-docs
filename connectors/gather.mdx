@@ -8,56 +8,60 @@ The Gather connector indexes meeting recordings, transcripts, and notes from you
 ## What gets indexed
 
 - Meeting transcripts
-- Meeting metadata (participants, duration, date)
+- Meeting metadata
 - Meeting notes
 - Screen shares (OCR text extraction)
 - Chat messages during meetings
 
 ## Setup
 
-### 1. Create API key
+<Steps>
+  <Step title="Create API key">
+    1. In Gather, go to **Space Settings → API**
+    2. Create a new API key
+    3. Copy the API key
+  </Step>
 
-1. In Gather, go to Space Settings > API
-2. Create a new API key
-3. Copy the API key
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Gather**
+    2. Enter your API key
+    3. Click **Save**
+  </Step>
 
-### 2. Connect to Grapevine
+  <Step title="Configure webhook (optional)">
+    For real-time updates, configure webhooks in Gather:
 
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Gather
-3. Enter your API key
-4. Click "Save"
+    1. In Gather, go to **Space Settings → Webhooks**
+    2. Create a new webhook
+    3. Set URL to: `https://webhooks.getgrapevine.ai/gather`
+    4. Select events: **Meeting ended**, **Recording available**
+  </Step>
+
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Gather meetings. The initial sync may take time depending on the number of recorded meetings in your space.
+  </Step>
+</Steps>
 
 ## Permissions
 
-Gather permissions are preserved:
+The Gather connector respects Gather permissions:
 
 - Users only see meetings they participated in
 - Private meetings remain private
-- Space permissions are respected
+- Space permissions are preserved
 
-## Webhook setup
+## Sync behavior
 
-For real-time updates:
+<Note>
+  The initial indexing process may take time depending on the number of recorded meetings in your space. Real-time updates are configured automatically via webhooks.
+</Note>
 
-1. In Gather Space Settings > Webhooks
-2. Create a new webhook
-3. Set URL to: `https://webhooks.getgrapevine.ai/gather`
-4. Select events:
-   - Meeting ended
-   - Recording available
-
-## Indexed content
-
-- Full meeting transcripts
-- Speaker identification
-- Meeting chat messages
-- Screen share text (OCR)
-- Meeting notes and action items
+- **Initial sync** - Begins automatically after setup completion
+- **Ongoing syncs** - Real-time updates via webhooks keep your index current
+- **Deletions** - Deleted meetings are removed from the index automatically
 
 ## Limitations
 
 - Only recorded meetings are indexed
-- Maximum 50,000 meetings
-- Deleted meetings are removed from index
-- Video files are not stored, only transcripts
+- Video files are not stored (only transcripts are indexed)
+- Deleted meetings are removed from the index

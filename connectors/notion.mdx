@@ -9,64 +9,81 @@ The Notion connector indexes pages, databases, and their content from your Notio
 
 - Pages and sub-pages
 - Database entries
-- Page content (text, headings, lists)
-- Comments
+- Page content (text, headings, lists, code blocks)
 - Page properties
+- File metadata
+
+<Note>
+  Only pages explicitly shared with the integration are indexed. You must manually share each workspace or page you want to index.
+</Note>
 
 ## Setup
 
-### 1. Create a Notion integration
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Notion**
+    2. Click the link to open **Notion Integrations** page
+    3. Click **New integration**
+  </Step>
 
-1. Go to [notion.so/my-integrations](https://www.notion.so/my-integrations)
-2. Click "New integration"
-3. Name your integration
-4. Select the workspace
-5. Set capabilities to "Read content"
+  <Step title="Create integration">
+    1. Name your integration (e.g., "Grapevine")
+    2. Select your workspace
+    3. Set capabilities to **Read content** only
+    4. Click **Submit**
+    5. Copy the **Internal Integration Token** (starts with `ntn_`)
+  </Step>
 
-### 2. Share pages with integration
+  <Step title="Enter integration token">
+    1. Return to the Grapevine integration page
+    2. Paste your Notion integration token
+    3. Click **Save**
+  </Step>
 
-1. Open the page you want to index
-2. Click "Share" in the top right
-3. Invite your integration
-4. Repeat for all pages you want indexed
+  <Step title="Share pages with integration">
+    1. In Notion, open each page or workspace you want to index
+    2. Click **Share** in the top right
+    3. Search for your integration name and invite it
+    4. Grant **Read** access
+    5. Repeat for all pages/workspaces you want indexed
+  </Step>
 
-### 3. Connect to Grapevine
+  <Step title="Configure webhook">
+    1. In Grapevine, copy the webhook URL displayed
+    2. Return to your Notion integration settings
+    3. Under **Webhooks**, click **Add webhook subscription**
+    4. Paste the webhook URL from Grapevine
+    5. Select events: **page.created**, **page.updated**, **page.deleted**
+    6. Copy the **verification token** and paste it in Grapevine
+    7. Click **Verify** in Notion
+  </Step>
 
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Notion
-3. Enter your Integration Token
-4. Click "Save"
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Notion pages. The initial sync may take time depending on the number of pages in your workspace.
+  </Step>
+</Steps>
 
 ## Permissions
 
-Grapevine respects Notion's sharing permissions:
+The Notion connector respects Notion's sharing permissions:
 
-- Only pages shared with the integration are indexed
-- User permissions from Notion are preserved
-- Private pages remain private
+- Only pages explicitly shared with the integration are indexed
+- Child pages within shared pages are automatically included
 
-## Webhook setup
+## Sync behavior
 
-For real-time updates:
+<Note>
+  The initial indexing processes pages in batches with delays to respect Notion's rate limits.
+</Note>
 
-1. In Grapevine, copy your webhook URL
-2. In Notion integration settings, add webhook URL
-3. Select events: `page.created`, `page.updated`, `page.deleted`
-
-## Supported content types
-
-- Text blocks
-- Headings
-- Lists (bulleted, numbered, toggle)
-- Code blocks
-- Quotes
-- Callouts
-- Tables
-- Database properties
+- **Initial sync** - Begins automatically after setup completion
+- **Ongoing syncs** - Real-time updates via webhooks keep your index current
+- **Deletions** - Deleted pages are removed from the index automatically
 
 ## Limitations
 
-- Embedded content is not indexed
-- Images are not indexed (only alt text)
-- File attachments are not indexed
-- Maximum page size: 10MB
+- Only pages shared with the integration are indexed
+- Comments are not indexed
+- Embedded content from external sources is not indexed
+- File and image content is not indexed (only metadata and captions)
+- Tables are partially supported

@@ -1,81 +1,59 @@
 ---
 title: GitHub
-description: Connect GitHub to index repositories, pull requests, and issues
+description: Connect GitHub to index repositories, pull requests, and files
 ---
 
-The GitHub connector indexes code, pull requests, issues, and discussions from your repositories.
+The GitHub connector indexes pull requests, code files, and comments from your GitHub repositories.
 
 ## What gets indexed
 
-- Repository files (code, markdown, documentation)
-- Pull requests and reviews
-- Issues and comments
-- Discussions
-- README files
-- Wiki pages
+- Pull requests
+- Pull request comments and reviews
+- Code files
+- Repository metadata
 
 ## Setup
 
-### 1. Create a GitHub App
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **GitHub**
+    2. Click **Install GitHub App**
+    3. A popup window will open to GitHub
+  </Step>
 
-1. Go to GitHub Settings > Developer settings > GitHub Apps
-2. Click "New GitHub App"
-3. Configure:
-   - Name: "Grapevine"
-   - Homepage URL: `https://getgrapevine.ai`
-   - Webhook URL: `https://webhooks.getgrapevine.ai/github`
+  <Step title="Install GitHub App">
+    1. Select the organization or account where you want to install the app
+    2. Choose which repositories to grant access to:
+       - **All repositories** - Indexes all current and future repositories
+       - **Only select repositories** - Choose specific repositories to index
+    3. Click **Install** to authorize the app
+  </Step>
 
-### 2. Set permissions
-
-**Repository permissions:**
-- Contents: Read
-- Issues: Read
-- Pull requests: Read
-- Metadata: Read
-
-### 3. Install the app
-
-1. Install the app to your organization
-2. Select repositories to index
-3. Authorize the installation
-
-### 4. Connect to Grapevine
-
-1. In Grapevine, go to Integrations
-2. Click "Connect" on GitHub
-3. Enter your GitHub App credentials
-4. Click "Save"
+  <Step title="Indexing begins">
+    You'll be redirected back to Grapevine and the installation will be saved automatically. Grapevine will begin indexing your GitHub repositories, pull requests, and files. The initial sync may take time depending on the size and number of repositories.
+  </Step>
+</Steps>
 
 ## Permissions
 
-GitHub permissions are preserved:
+The GitHub connector respects GitHub permissions:
 
-- Public repositories are searchable by all users
-- Private repositories are only searchable by users with access
-- Organization members see organization repositories
+- Only repositories granted to the GitHub App installation are indexed
+- Private repository access is controlled by GitHub App permissions
+- Users can modify repository access at any time through GitHub settings
 
-## Webhook events
+## Sync behavior
 
-Grapevine listens for these events:
+<Note>
+  The initial indexing processes repositories in batches. Real-time updates are configured automatically via webhooks.
+</Note>
 
-- `push` - Code changes
-- `pull_request` - PR created/updated
-- `issues` - Issue created/updated
-- `issue_comment` - Comments added
-- `pull_request_review` - PR reviews
-
-## File type support
-
-Indexed file types:
-
-- Source code (`.js`, `.py`, `.go`, `.java`, etc.)
-- Markdown (`.md`)
-- Documentation (`.txt`, `.rst`)
-- Configuration (`.json`, `.yaml`, `.toml`)
+- **Initial sync** - Begins automatically after installation
+- **Ongoing syncs** - Real-time updates via GitHub webhooks keep your index current
+- **Deletions** - Deleted files and closed PRs are reflected in the index automatically
 
 ## Limitations
 
-- Binary files are not indexed
 - Files larger than 1MB are truncated
-- Maximum 10,000 files per repository
-- Archived repositories are not indexed
+- Binary files are not indexed (only source code and text files)
+- Only repositories granted to the GitHub App installation are indexed

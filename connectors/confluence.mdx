@@ -3,71 +3,69 @@ title: Confluence
 description: Connect Confluence to index pages and spaces
 ---
 
-The Confluence connector indexes pages, spaces, and attachments from your Atlassian Confluence instance.
+The Confluence connector indexes pages, spaces, and comments from your Atlassian Confluence instance.
 
 ## What gets indexed
 
 - Pages and child pages
-- Space content
 - Page comments
-- Attachments (PDFs, documents)
-- Page labels and metadata
+- Page metadata and labels
+- Space metadata
+
+<Note>
+  Requires Atlassian Confluence Cloud. Data Center/Server versions are not currently supported.
+</Note>
 
 ## Setup
 
-### 1. Create an API token
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Confluence**
+    2. Enter your Confluence site URL (e.g., `https://acme.atlassian.net`)
+    3. Click **Save**
+  </Step>
 
-1. Go to [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
-2. Click "Create API token"
-3. Name your token
-4. Copy the token
+  <Step title="Install Forge app">
+    1. Click **Install Confluence App**
+    2. You'll be redirected to the Atlassian Marketplace
+    3. Click **Get it now** to install the Grapevine app
+    4. Approve the installation for your Confluence site
+  </Step>
 
-### 2. Get your site URL
+  <Step title="Configure signing secret">
+    1. Return to the Grapevine integration page
+    2. Copy the **signing secret** displayed
+    3. In Confluence, go to **Settings → Manage apps → Grapevine**
+    4. Paste the signing secret into the app configuration
+    5. Click **Save**
+  </Step>
 
-Your Confluence site URL is typically:
-`https://your-domain.atlassian.net/wiki`
-
-### 3. Connect to Grapevine
-
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Confluence
-3. Enter:
-   - Site URL
-   - Email address
-   - API token
-4. Click "Save"
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Confluence pages. The initial sync may take time depending on the number of pages in your instance.
+  </Step>
+</Steps>
 
 ## Permissions
 
-Confluence permissions are respected:
+The Confluence connector respects Confluence permissions:
 
-- Users only see pages they have access to
-- Space permissions are preserved
-- Restricted pages remain restricted
+- Only pages the Forge app can access are indexed
+- Space-level permissions are preserved
+- Restricted pages are handled according to Confluence access controls
 
-## Webhook setup
+## Sync behavior
 
-For real-time updates:
+<Note>
+  The initial indexing processes pages by space. Real-time updates are configured automatically via the Forge app.
+</Note>
 
-1. In Confluence, go to Settings > Webhooks
-2. Create a new webhook
-3. Set URL to: `https://webhooks.getgrapevine.ai/confluence`
-4. Select events:
-   - Page created
-   - Page updated
-   - Page removed
-
-## Supported content
-
-- Rich text content
-- Tables
-- Code blocks
-- Macros (expanded content)
-- Attachments (text extraction)
+- **Initial sync** - Begins automatically after installation
+- **Ongoing syncs** - Real-time updates via Forge app webhooks keep your index current
+- **Deletions** - Deleted pages are removed from the index automatically
 
 ## Limitations
 
+- Only Confluence Cloud is supported (not Data Center or Server)
 - Maximum page size: 10MB
 - Archived spaces are not indexed
 - Some macros may not be fully indexed
-- Embedded content may have limited indexing

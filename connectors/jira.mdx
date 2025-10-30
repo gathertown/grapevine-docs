@@ -3,79 +3,69 @@ title: Jira
 description: Connect Jira to index issues, projects, and comments
 ---
 
-The Jira connector indexes issues, projects, and related content from your Atlassian Jira instance.
+The Jira connector indexes issues, comments, and project metadata from your Atlassian Jira instance.
 
 ## What gets indexed
 
-- Issues and sub-tasks
+- Issues (all types including epics, stories, bugs, tasks)
 - Issue descriptions and comments
 - Custom fields
-- Attachments
 - Project metadata
 - Sprint information
 
+<Note>
+  Requires Atlassian Jira Cloud. Data Center/Server versions are not currently supported.
+</Note>
+
 ## Setup
 
-### 1. Create an API token
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Jira**
+    2. Enter your Jira site URL (e.g., `https://acme.atlassian.net`)
+    3. Click **Save**
+  </Step>
 
-1. Go to [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
-2. Click "Create API token"
-3. Name your token
-4. Copy the token
+  <Step title="Install Forge app">
+    1. Click **Install Jira App**
+    2. You'll be redirected to the Atlassian Marketplace
+    3. Click **Get it now** to install the Grapevine app
+    4. Approve the installation for your Jira site
+  </Step>
 
-### 2. Get your site URL
+  <Step title="Configure signing secret">
+    1. Return to the Grapevine integration page
+    2. Copy the **signing secret** displayed
+    3. In Jira, go to **Settings → Manage apps → Grapevine**
+    4. Paste the signing secret into the app configuration
+    5. Click **Save**
+  </Step>
 
-Your Jira site URL is typically:
-`https://your-domain.atlassian.net`
-
-### 3. Connect to Grapevine
-
-1. In Grapevine, go to Integrations
-2. Click "Connect" on Jira
-3. Enter:
-   - Site URL
-   - Email address
-   - API token
-4. Click "Save"
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Jira issues. The initial sync may take time depending on the number of issues in your instance.
+  </Step>
+</Steps>
 
 ## Permissions
 
-Jira permissions are preserved:
+The Jira connector respects Jira permissions:
 
-- Users only see issues they have access to
-- Project permissions are respected
-- Private issues remain private
+- Only issues the Forge app can access are indexed
+- Project-level permissions are preserved
+- Restricted issues are handled according to Jira access controls
 
-## Webhook setup
+## Sync behavior
 
-For real-time updates:
+<Note>
+  The initial indexing processes issues by project. Real-time updates are configured automatically via the Forge app.
+</Note>
 
-1. In Jira, go to Settings > System > Webhooks
-2. Create a new webhook
-3. Set URL to: `https://webhooks.getgrapevine.ai/jira`
-4. Select events:
-   - Issue created
-   - Issue updated
-   - Issue deleted
-   - Comment created
-
-## Indexed fields
-
-Standard fields:
-- Summary
-- Description
-- Status
-- Priority
-- Assignee
-- Reporter
-- Labels
-- Components
-
-Custom fields are also indexed.
+- **Initial sync** - Begins automatically after installation
+- **Ongoing syncs** - Real-time updates via Forge app webhooks keep your index current
+- **Deletions** - Deleted issues are removed from the index automatically
 
 ## Limitations
 
-- Maximum 50,000 issues per project
+- Only Jira Cloud is supported (not Data Center or Server)
 - Archived projects are not indexed
-- Attachments larger than 10MB are not indexed
 - Some custom field types may have limited support
