@@ -3,42 +3,60 @@ title: Security & Privacy
 description: Learn how Grapevine protects your data and respects privacy
 ---
 
-Grapevine is built with security and privacy as core principles.
+Grapevine is built with security and privacy as core principles. The platform is designed to keep every tenant’s data isolated, resilient against bad actors, and trusted by enterprise teams.
 
-## Data security
+## Security
 
-### Encryption
+<Note>
+  Grapevine is built from the ground up around security. We maintain SOC 2 Type II certification and partner with an independent security firm for recurring audits and penetration testing.
+</Note>
 
-- All data is encrypted in transit using TLS 1.3
-- Data at rest is encrypted using industry-standard encryption
-- API keys and credentials are stored securely using AWS Secrets Manager
+<CardGroup cols={2}>
+  <Card title="Encryption everywhere" icon="key">
+    TLS 1.3 protects every request in transit, while AES-256 encryption keeps all data at rest secured. Secrets and credentials are isolated inside AWS Secrets Manager.
+  </Card>
+  <Card title="Tenant isolation by design" icon="users">
+    Dedicated compute per tenant group and signed tenant context on every request ensure data is never commingled. Cross-tenant access is structurally impossible.
+  </Card>
+  <Card title="External security firm auditing" icon="swords">
+    Independent experts conduct recurring penetration tests and audits across our infrastructure, validating every control.
+  </Card>
+  <Card title="SOC 2 certified" icon="shield-check">
+    We maintain SOC 2 Type II certification so you know our safeguards are independently verified and continuously monitored.
+  </Card>
+</CardGroup>
 
-### Access control
-
-- OAuth-based authentication for all integrations
-- Permissions are inherited from source systems
-- Users only see content they have access to in the original source
+<Note>
+  Have additional security questions? <a href="mailto:grapevine@gather.town">Reach out to our team</a>.
+</Note>
 
 ## Privacy
 
-### Data handling
+<CardGroup cols={3}>
+  <Card title="We never train on your data" icon="brain-circuit">
+    We do not train models on your data. Your data is your own.
+  </Card>
+  <Card title="Permission-aware by default" icon="reflect-horizontal">
+    Grapevine mirrors source-level permissions, so private docs stay private and results only reach authorized teammates.
+  </Card>
+  <Card title="Control is always in your hands" icon="trash">
+    Disconnect sources, revoke tokens, or delete data at any time from the admin console—your changes take effect immediately.
+  </Card>
+  <Card title="Data handling" icon="puzzle-piece">
+    Grapevine only indexes the content and workspaces you explicitly connect.
+  </Card>
+</CardGroup>
 
-- Grapevine only indexes content you explicitly connect
-- You maintain full control over what data is indexed
-- Data can be deleted at any time through the admin interface
-
-### Compliance
-
-- SOC 2 Type II compliant
-- GDPR compliant
-- CCPA compliant
 
 ## Data deletion
 
-You can delete your data at any time:
+Once you confirm deletion, Grapevine stops indexing new content right away and begins purging all stored data. In most cases the removal finishes within minutes.
 
-1. Navigate to Organization Settings
-2. Select "Delete Organization Data"
-3. Confirm deletion
-
-All indexed content and metadata will be permanently removed within 24 hours.
+<Steps>
+  <Step title="Open Organization Settings">
+   From the admin console, head to the [Organization Settings page](https://app.getgrapevine.ai/organization-settings).
+  </Step>
+  <Step title="Click Delete Data">
+   Click the "Delete Data" button to begin the deletion process.
+  </Step>
+</Steps>
