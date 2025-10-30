@@ -1,20 +1,19 @@
 ---
-title: MCP API
-description: Use Grapevine as a Model Context Protocol server
+title: MCP Server
+description: Use the Grapevine Model Context Protocol server to bring Company Context to your Agents
 ---
 
-Grapevine implements the Model Context Protocol (MCP), allowing AI assistants to search your knowledge base.
+import SearchFilters from '/snippets/search-filters.mdx';
+import DocumentIdParam from '/snippets/document-id-param.mdx';
+import SourceDescription from '/snippets/source-description.mdx';
 
 ## Overview
 
-The MCP server exposes Grapevine's search capabilities to AI assistants like Claude, enabling them to query your company's knowledge base during conversations.
+The Grapevine MCP provides 2 categories of tools that can be used to query your Company Context:
 
-## Setup
+[Search Tools](#search-tools) are the core tools, intended to be used by an agent to find specific documents that match a query. These tools are intended to be used in sequence, and execute quickly. They are modeled after the tools that applications like Claude Code or Cline use to navigate a codebase.
 
-### Prerequisites
-
-- Grapevine account with an API key
-- MCP-compatible AI assistant (e.g., Claude Desktop)
+In addition to the Search Tools, we provide a pre-packaged [Agent Tool](#agent-tools) that is adept at using the Search Tools to research your Company Context and answer arbitrary questions. 
 
 ### Configuration
 
@@ -24,112 +23,303 @@ Grapevine runs as a remote MCP server at:
 https://mcp.getgrapevine.ai
 ```
 
-Add Grapevine to your MCP client configuration with your API key:
-
-```json
-{
-  "mcpServers": {
-    "grapevine": {
-      "url": "https://mcp.getgrapevine.ai",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
-```
-
-### Claude Desktop
-
-For Claude Desktop, add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "grapevine": {
-      "url": "https://mcp.getgrapevine.ai",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
-```
-
-Replace `YOUR_API_KEY` with your actual API key from the Grapevine admin dashboard.
+For more information on how to setup your Grapevine tenant, see [Getting Started](/getting-started/quickstart). For more information on how you can authenticate with the MCP, see the [Authentication](/getting-started/authentication) page.
 
 ## Available tools
 
-The MCP server exposes these tools to AI assistants:
+### Search tools
 
-### search
+These tools provide direct access to search and retrieve documents from your organization's knowledge base.
 
-Search your knowledge base using natural language.
+<Accordion title="semantic_search" icon="sparkles">
 
-**Parameters:**
-- `query` (string) - The search query
-- `max_results` (integer, optional) - Maximum results to return
+Search your organization's internal context for conceptually similar content using AI embeddings. Use this when you need to find documents that are semantically related to your query, even if they don't contain exact keyword matches.
 
-**Example:**
-```
-User: What is our pricing strategy?
-Assistant: [Uses search tool with query "pricing strategy"]
-```
+<Tabs>
+  <Tab title="Request">
+    <ParamField path="query" type="string" required>
+      Natural language query to search for semantically similar content
+    </ParamField>
 
-### get_document
+    <ParamField path="limit" type="integer" default={10}>
+      Maximum number of results to return (min: 1, max: 100)
+    </ParamField>
 
-Retrieve a specific document by ID.
+    <ParamField path="filters" type="SearchFilters">
+      Filters to narrow down results. See [SearchFilters](/features/api-reference#searchfilters) for complete structure and available options
 
-**Parameters:**
-- `document_id` (string) - The document identifier
+      <Expandable title="properties">
+        <SearchFilters />
+      </Expandable>
+    </ParamField>
+  </Tab>
 
-### semantic_search
+  <Tab title="Response">
+    <ResponseField name="results" type="object[]">
+      Array of search results
 
-Perform semantic similarity search.
+      <Expandable title="properties">
+        <ResponseField name="document_id" type="string">
+          <DocumentIdParam />
+        </ResponseField>
 
-**Parameters:**
-- `query` (string) - The search query
-- `filters` (object, optional) - Filter by source, date, etc.
+        <ResponseField name="chunk_id" type="string">
+          Identifier for the specific text chunk that matched
+        </ResponseField>
 
-## Usage examples
+        <ResponseField name="chunk" type="string">
+          The matched text content
+        </ResponseField>
 
-### Basic search
+        <ResponseField name="score" type="number">
+          Semantic similarity score (0-1, higher is more similar)
+        </ResponseField>
 
-```
-User: Can you find information about our Q4 roadmap?
-Assistant: [Searches Grapevine and provides answer with citations]
-```
+        <ResponseField name="metadata" type="object">
+          Document metadata
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
 
-### Filtered search
+    <ResponseField name="count" type="number">
+      Total number of results returned
+    </ResponseField>
+  </Tab>
+</Tabs>
 
-```
-User: What engineering decisions were made last month?
-Assistant: [Searches with date filter and source filter for GitHub/Linear]
-```
+</Accordion>
 
-## Security
+<Accordion title="keyword_search" icon="magnifying-glass">
 
-The MCP server requires authentication via API key:
+Search your organization's internal context for documents containing specific keywords or phrases. Supports both natural language queries and advanced OpenSearch syntax.
 
-- All requests must include a valid API key
-- API keys provide access to all content in your organization
-- All requests are authenticated and logged
+<Tabs>
+  <Tab title="Request">
+    <ParamField path="query" type="string" required>
+      Search query
 
-## Troubleshooting
+      - **Standard mode:** Natural language keywords
+      - **Advanced mode:** OpenSearch syntax with operators (`AND`, `OR`, `NOT`, `+`, `-`, wildcards `*`, field queries `field:value`, grouping with parentheses, fuzzy search `~`, boosting `^`)
+    </ParamField>
 
-### Connection issues
+    <ParamField path="limit" type="integer" default={10}>
+      Maximum number of results to return (min: 1, max: 100)
+    </ParamField>
 
-If the MCP server fails to connect:
+    <ParamField path="filters" type="SearchFilters">
+      Filters to narrow down results. See [SearchFilters](/features/api-reference#searchfilters) for complete structure and available options
 
-1. Verify your API key is correct and properly formatted in the configuration
-2. Ensure the URL is set to `https://mcp.getgrapevine.ai`
-3. Check that your API key hasn't been revoked in the admin dashboard
+      <Expandable title="properties">
+        <SearchFilters />
+      </Expandable>
+    </ParamField>
 
-### Authentication errors
+    <ParamField path="advanced" type="boolean" default={false}>
+      Enable advanced OpenSearch query syntax
+    </ParamField>
+  </Tab>
 
-If you receive authentication errors:
+  <Tab title="Response">
+    <ResponseField name="results" type="object[]">
+      Array of search results
 
-1. Verify your API key is included in the `Authorization` header
-2. Ensure the API key format is correct: `Bearer YOUR_API_KEY`
-3. Check that your API key hasn't expired or been deleted
-4. Contact support if issues persist
+      <Expandable title="properties">
+        <ResponseField name="document_id" type="string">
+          <DocumentIdParam />
+        </ResponseField>
+
+        <ResponseField name="score" type="number">
+          Relevance score based on keyword matching
+        </ResponseField>
+
+        <ResponseField name="source" type="string">
+          <SourceDescription />
+        </ResponseField>
+
+        <ResponseField name="metadata" type="object">
+          Document metadata
+        </ResponseField>
+
+        <ResponseField name="snippets" type="object[]">
+          Text snippets showing where keywords matched
+
+          <Expandable title="properties">
+            <ResponseField name="field" type="string">
+              Field name where the match occurred (e.g., "content", "title")
+            </ResponseField>
+
+            <ResponseField name="text" type="string">
+              Highlighted snippet with surrounding context
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="count" type="number">
+      Total number of results returned
+    </ResponseField>
+  </Tab>
+</Tabs>
+
+</Accordion>
+
+<Accordion title="get_document" icon="file-text">
+
+Retrieve the full raw text content of a specific document from your organization's internal context. Use this when you have a document ID from search results and need the complete document text.
+
+<Tabs>
+  <Tab title="Request">
+    <ParamField path="document_id" type="string" required>
+      <DocumentIdParam />
+    </ParamField>
+  </Tab>
+
+  <Tab title="Response">
+    <ResponseField name="document_id" type="string">
+      <DocumentIdParam />
+    </ResponseField>
+
+    <ResponseField name="content" type="string">
+      Full raw text content of the document
+    </ResponseField>
+  </Tab>
+</Tabs>
+
+</Accordion>
+
+<Accordion title="get_document_metadata" icon="info">
+
+Retrieve metadata for a document without downloading its full text content. Use this when you only need document information like source, dates, and metadata fields.
+
+<Tabs>
+  <Tab title="Request">
+    <ParamField path="document_id" type="string" required>
+      <DocumentIdParam />
+    </ParamField>
+  </Tab>
+
+  <Tab title="Response">
+    <ResponseField name="document_id" type="string">
+      <DocumentIdParam />
+    </ResponseField>
+
+    <ResponseField name="source" type="string">
+      <SourceDescription />
+    </ResponseField>
+
+    <ResponseField name="metadata" type="object">
+      Source-specific metadata for the document
+    </ResponseField>
+
+    <ResponseField name="source_created_at" type="timestamp">
+      ISO 8601 timestamp of when the document was created in the source system
+    </ResponseField>
+
+    <ResponseField name="created_at" type="timestamp">
+      ISO 8601 timestamp of when the document was indexed in Grapevine
+    </ResponseField>
+
+    <ResponseField name="updated_at" type="timestamp">
+      ISO 8601 timestamp of when the document was last updated in Grapevine
+    </ResponseField>
+  </Tab>
+</Tabs>
+
+</Accordion>
+
+<Note>
+For complete details on document sources, ID formats, filters, and data structures, see the [API Reference](/features/api-reference).
+</Note>
+
+### Agent Tools
+
+<Accordion title="ask_agent" icon="robot">
+
+This is the simplest way to get a comprehensive answer with citations - it is a good starting point for complex queries that require reasoning and synthesis across multiple documents.
+<Warning>
+`ask_agent` is akin to a Deep Research Agent - it is slow, thorough, and will answer with citations to the documents that were used to answer the question. Make sure your client is ready for large (100k+ tokens) and slow (multi-minute) responses.
+</Warning>
+
+<Tabs>
+  <Tab title="Request">
+    <ParamField path="query" type="string" required>
+      User question to answer with agentic search
+    </ParamField>
+
+    <ParamField path="files" type="array">
+      Optional file attachments as list of objects with:
+      - `name` (string) - Filename
+      - `mimetype` (string) - MIME type
+      - `content` (string) - Base64 encoded file content
+    </ParamField>
+
+    <ParamField path="previous_response_id" type="string">
+      Prior response ID to continue a conversation
+    </ParamField>
+
+    <ParamField path="output_format" type="string">
+      Output format: use `'slack'` for Slack markdown formatting
+    </ParamField>
+
+    <ParamField path="agent_prompt_override" type="string">
+      Override the default system prompt
+    </ParamField>
+
+    <ParamField path="reasoning_effort" type="string" default="medium">
+      OpenAI reasoning effort level: `'minimal'`, `'low'`, `'medium'`, or `'high'`
+    </ParamField>
+
+    <ParamField path="verbosity" type="string">
+      Response detail level: `'low'`, `'medium'`, or `'high'`
+    </ParamField>
+  </Tab>
+
+  <Tab title="Response">
+    <ResponseField name="answer" type="string">
+      The comprehensive answer with citations
+    </ResponseField>
+
+    <ResponseField name="response_id" type="string">
+      Unique identifier for this response, can be used in `previous_response_id` for follow-up queries
+    </ResponseField>
+
+    <ResponseField name="events" type="array">
+      Array of events that occurred during the agentic search process
+    </ResponseField>
+  </Tab>
+</Tabs>
+
+</Accordion>
+
+<Accordion title="ask_agent_streaming" icon="stream">
+
+Streaming variant of `ask_agent` that returns events as they occur. Use this when you need real-time progress updates during agentic search.
+
+<Tabs>
+  <Tab title="Request">
+    Same as `ask_agent` above.
+  </Tab>
+
+  <Tab title="Response">
+    <ResponseField name="answer" type="string">
+      The comprehensive answer with citations
+    </ResponseField>
+
+    <ResponseField name="response_id" type="string">
+      Unique identifier for this response, can be used in `previous_response_id` for follow-up queries
+    </ResponseField>
+
+    <ResponseField name="citations" type="array">
+      Array of citations to source documents used to generate the answer
+    </ResponseField>
+
+    <ResponseField name="events" type="array">
+      Array of streaming events as they occur during the agentic search process
+    </ResponseField>
+
+    **Event types:** `status`, `tool_call`, `tool_result`, `final_answer`, `message`
+  </Tab>
+</Tabs>
+
+</Accordion>

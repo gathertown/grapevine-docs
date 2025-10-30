@@ -3,9 +3,135 @@ title: Authentication
 description: Learn how to authenticate with Grapevine's API
 ---
 
-Grapevine uses API keys for authentication. API keys provide programmatic access to both the REST API and MCP protocol.
+Grapevine supports two authentication methods: **API keys** for programmatic access to both the [REST API](/features/rest-api) and [MCP server](/features/mcp-api), and **OAuth** for human users connecting to MCP through interactive clients.
 
-## Creating an API key
+## Choosing an authentication method
+
+Choose the authentication method that best fits your use case:
+
+<CardGroup cols={2}>
+  <Card title="OAuth" icon="user">
+    **Best for:** Human users, desktop MCP clients, interactive sessions
+
+    - Browser-based login flow
+    - Automatic token refresh
+    - Works only with MCP protocol
+    - **Access to private data** based on authenticated user
+  </Card>
+  <Card title="API Keys" icon="key">
+    **Best for:** Automation, scripts, CI/CD, programmatic access
+
+    - Long-lived tokens
+    - Works with both [REST API](/features/rest-api) and [MCP server](/features/mcp-api)
+    - Simple Bearer token authentication
+    - **Public data only** - team-scoped access
+  </Card>
+</CardGroup>
+
+
+## MCP Server
+
+Grapevine runs as a remote MCP server at `https://mcp.getgrapevine.ai`. The MCP server supports both OAuth and API key authentication.
+See the [MCP API documentation](/features/mcp-api) for complete protocol details and available tools.
+
+### OAuth (Recommended for human users)
+
+OAuth provides a seamless authentication experience for human users connecting through MCP clients. The client automatically handles the browser-based login flow.
+
+<Note>
+  OAuth authentication enables access to **private data** based on the authenticated user's permissions. This allows MCP clients to access personal context that API keys cannot reach.
+</Note>
+
+<Tabs>
+  <Tab title="Claude Desktop">
+    ```json
+    {
+      "mcpServers": {
+        "grapevine": {
+          "url": "https://mcp.getgrapevine.ai"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    from fastmcp import Client
+    import asyncio
+
+    async def main():
+        # OAuth flow handled automatically - browser will open for login
+        async with Client("https://mcp.getgrapevine.ai/", auth="oauth") as client:
+            # Use MCP tools
+            result = await client.call_tool("ask_agent", {"query": "What is our pricing?"})
+            print(result)
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+  </Tab>
+</Tabs>
+
+
+
+### API Keys (For programmatic access)
+
+For scripts, automation, and programmatic access, use API keys with the Authorization header:
+
+<Tabs>
+  <Tab title="Claude Desktop">
+    ```json
+    {
+      "mcpServers": {
+        "grapevine": {
+          "url": "https://mcp.getgrapevine.ai",
+          "headers": {
+            "Authorization": "Bearer YOUR_API_KEY"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    from fastmcp import Client
+    import asyncio
+
+    async def main():
+        async with Client(
+            "https://mcp.getgrapevine.ai/mcp/",
+            headers={"Authorization": "Bearer YOUR_API_KEY"}
+        ) as client:
+            result = await client.call_tool("ask_agent", {"query": "What is our pricing?"})
+            print(result)
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+  </Tab>
+</Tabs>
+
+## REST API
+
+Include your API key in the `Authorization` header as a Bearer token:
+
+```bash
+curl https://api.getgrapevine.ai/v1/ask \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What is our pricing strategy?"}'
+```
+
+See the [REST API documentation](/features/rest-api) for complete endpoint details.
+
+
+
+## Managing API keys
+
+### Creating an API key
+
+API keys are currently team-scoped, and only have access to public information in your tenant. For more information on public vs private data, see [Privacy](/getting-started/security-privacy)
 
 <Steps>
   <Step title="Open API Keys page">
@@ -24,50 +150,6 @@ Grapevine uses API keys for authentication. API keys provide programmatic access
     </Warning>
   </Step>
 </Steps>
-
-## Using API keys
-
-API keys work with both Grapevine's [REST API](/features/rest-api) and [MCP API](/features/mcp-api). API keys are currently team-scoped, and only have access to public information in your tenant. For more information on public vs private data, see [Privacy](/getting-started/security-privacy)
-
-### REST API
-
-Include your API key in the `Authorization` header as a Bearer token:
-
-```bash
-curl https://api.getgrapevine.ai/v1/ask \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "What is our pricing strategy?"}'
-```
-
-See the [REST API documentation](/features/rest-api) for complete endpoint details.
-
-### MCP Protocol
-
-Grapevine runs as a remote MCP server. Configure your MCP client to connect to:
-
-```
-https://mcp.getgrapevine.ai
-```
-
-Include your API key in the Authorization header. Example configuration for Claude Desktop:
-
-```json
-{
-  "mcpServers": {
-    "grapevine": {
-      "url": "https://mcp.getgrapevine.ai",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
-```
-
-See the [MCP API documentation](/features/mcp-api) for complete protocol details and available tools.
-
-## Managing API keys
 
 ### Viewing keys
 
@@ -94,17 +176,17 @@ Revoked keys stop working immediately.
 ## Security best practices
 
 <CardGroup cols={2}>
+  <Card title="Choose the right method" icon="user-shield">
+    Use OAuth for interactive human sessions through MCP clients. Reserve API keys for automation, scripts, and programmatic access.
+  </Card>
   <Card title="Store securely" icon="lock">
     Store API keys in environment variables or secure credential management systems. Never commit them to version control.
   </Card>
   <Card title="Use descriptive names" icon="tag">
-    Name keys based on their purpose or environment to make management easier.
+    Name API keys based on their purpose or environment to make management easier.
   </Card>
   <Card title="Rotate regularly" icon="rotate">
-    Keys don't expire - make sure you rotate them if there is ever a chance they are compromised (such as team changes).
-  </Card>
-  <Card title="Limit exposure" icon="eye-slash">
-    Only share keys with team members who need them. Create separate keys for different uses.
+    API Keys don't expire - make sure you rotate them if there is ever a chance they are compromised (such as team changes).
   </Card>
 </CardGroup>
 

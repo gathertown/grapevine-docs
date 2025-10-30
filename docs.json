@@ -23,8 +23,9 @@
       {
         "group": "Features",
         "pages": [
-          "features/rest-api",
           "features/mcp-api",
+          "features/rest-api",
+          "features/api-reference",
           "features/webhooks"
         ]
       },

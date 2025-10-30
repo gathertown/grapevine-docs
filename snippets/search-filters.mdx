@@ -1,0 +1,19 @@
+<ParamField path="sources" type="string[]">
+  List of document sources to filter by. See [Document Sources](/features/api-reference#document-sources) for available values
+</ParamField>
+
+<ParamField path="date_from" type="string">
+  Start date in `YYYY-MM-DD` format. Only return documents created on or after this date
+</ParamField>
+
+<ParamField path="date_to" type="string">
+  End date in `YYYY-MM-DD` format. Only return documents created on or before this date
+</ParamField>
+
+<ParamField path="provenance" type="string">
+  Source-specific filter to narrow results within a connector (e.g., Slack channel name, GitHub repository name, Linear team name). See [Provenance Filters](/features/api-reference#provenance-filters) for details
+</ParamField>
+
+<ParamField path="document_id" type="string">
+  Exact document ID to retrieve. When provided, all other filters are ignored and only this specific document is returned
+</ParamField>

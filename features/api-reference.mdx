@@ -1,0 +1,77 @@
+---
+title: Reference
+description: Complete reference documentation for the Grapevine MCP tools, parameters, and data structures
+---
+
+import SearchFilters from '/snippets/search-filters.mdx';
+
+## Document Sources and IDs
+
+Below is a list of all currently supported `source`s
+
+| Source Value         | Connector                                        | Document ID Format Pattern                       | Example                                       |
+|----------------------|--------------------------------------------------|--------------------------------------------------|-----------------------------------------------|
+| `SLACK`              | [Slack](/connectors/slack)                      | `{channel_id}_{date}`                            | `C1234567890_2024-01-15`                      |
+| `GITHUB_PRS`         | [GitHub](/connectors/github)                    | `{repo_id}_pr_{pr_number}`                       | `123456789_pr_12345`                          |
+| `GITHUB_CODE`        | [GitHub](/connectors/github)                    | `github_file_{owner}/{repo}/{file_path}`         | `github_file_octocat/Hello-World/README.md`   |
+| `NOTION`             | [Notion](/connectors/notion)                    | `notion_page_{page_id}`                          | `notion_page_abcdefgh-1234-6789-0zxy-w01234567890` |
+| `LINEAR`             | [Linear](/connectors/linear)                    | `issue_{issue_id}`                               | `issue_11223344-5566-7788-9900-aabbccddeeff`  |
+| `GOOGLE_DRIVE`       | [Google Drive](/connectors/google-drive)        | `google_drive_file_{file_id}`                    | `google_drive_file_1a2b3c4d5e6f7g8h9i0j`      |
+| `GOOGLE_EMAIL`       | [Google Email](/connectors/google-email)        | *(not applicable)*                               | *(not applicable)*                            |
+| `JIRA`               | [Jira](/connectors/jira)                        | `jira_issue_{issue_id}`                          | `jira_issue_10218`                            |
+| `CONFLUENCE`         | [Confluence](/connectors/confluence)            | `confluence_page_{page_id}`                      | `confluence_page_123456789`                   |
+| `HUBSPOT_DEAL`       | [HubSpot](/connectors/hubspot)                  | *(not applicable)*                               | *(not applicable)*                            |
+| `HUBSPOT_CONTACT`    | [HubSpot](/connectors/hubspot)                  | *(not applicable)*                               | *(not applicable)*                            |
+| `HUBSPOT_TICKET`     | [HubSpot](/connectors/hubspot)                  | *(not applicable)*                               | *(not applicable)*                            |
+| `HUBSPOT_COMPANY`    | [HubSpot](/connectors/hubspot)                  | *(not applicable)*                               | *(not applicable)*                            |
+| `GONG`               | [Gong](/connectors/gong)                        | *(not applicable)*                               | *(not applicable)*                            |
+| `GATHER`             | [Gather](/connectors/gather)                    | *(not applicable)*                               | *(not applicable)*                            |
+
+## SearchFilters
+
+The `SearchFilters` object is used by [Search Tools](/features/mcp-api#search-tools) to narrow down search results
+
+<Accordion title="SearchFilters Properties" defaultOpen>
+  <SearchFilters />
+</Accordion>
+
+## Provenance Filters
+
+The [`filters.provenance`](/features/api-reference#searchfilters) parameter allows you to narrow search results within a specific connector (e.g., search within a specific Slack channel or GitHub repository).
+
+<Warning>
+**Provenance Filtering Requirements**
+
+To use provenance filtering, you must:
+- Specify **exactly one source** in `filters.sources`
+- Use a source that supports provenance (see table below)
+
+Attempting to use provenance with multiple sources or an unsupported source will result in an error.
+</Warning>
+
+Supported sources and provenance value formats:
+
+| Source | Provenance Value Format |
+| --- | --- |
+| [`SLACK`](/connectors/slack) | Channel name **OR** channel ID |
+| [`GITHUB_PRS`](/connectors/github) | Repository name |
+| [`GITHUB_CODE`](/connectors/github) | Repository name |
+| [`LINEAR`](/connectors/linear) | Team name |
+
+## File Attachments
+
+The [Agent Tools](/features/mcp-api#agent-tools) can accept file attachments as an array of FileAttachment objects.
+
+<Accordion title="FileAttachment Properties">
+  <ParamField path="name" type="string" required>
+    Filename with extension (e.g., `"document.pdf"`, `"image.png"`)
+  </ParamField>
+
+  <ParamField path="mimetype" type="string" required>
+    MIME type of the file (e.g., `"application/pdf"`, `"image/png"`, `"text/plain"`)
+  </ParamField>
+
+  <ParamField path="content" type="string" required>
+    Base64 encoded file content
+  </ParamField>
+</Accordion>
