@@ -30,6 +30,15 @@
         ]
       },
       {
+        "group": "Examples",
+        "pages": [
+          {
+            "group": "Augment your Coding agent",
+            "pages": ["examples/coding-agents/opencode"]
+          }
+        ]
+      },
+      {
         "group": "Connectors",
         "pages": [
           "connectors/slack",
@@ -64,11 +73,7 @@
     }
   },
   "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "mcp"
-   ]
+    "options": ["copy", "view", "mcp"]
   },
   "feedback": {
     "suggestEdit": true,

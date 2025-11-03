@@ -1,0 +1,77 @@
+---
+title: Augmenting coding agents
+description: Add company context to your coding agents using Grapevine
+---
+
+Grapevine enables coding agents to access your company's internal knowledge, making them more effective at understanding your codebase, processes, and context.
+
+## Overview
+
+Coding agents like GitHub Copilot, Cursor, or custom AI assistants can be significantly more helpful when they have access to your company's documentation, code comments, Slack discussions, and other internal knowledge sources.
+
+Grapevine provides this context through the Model Context Protocol (MCP), allowing agents to search and retrieve relevant information from your organization's knowledge base.
+
+## Benefits
+
+- **Code understanding**: Agents can reference internal documentation and code patterns
+- **Process awareness**: Access to team discussions, decisions, and workflows
+- **Faster onboarding**: New team members get instant access to company context
+- **Consistent coding**: Follow established patterns and conventions
+- **Reduced guesswork**: Agents can verify assumptions against real company data
+
+## Setup options
+
+### MCP integration
+
+Use Grapevine's MCP server to connect coding agents that support the Model Context Protocol:
+
+```json
+{
+  "mcpServers": {
+    "grapevine": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.getgrapevine.ai"]
+    }
+  }
+}
+```
+
+### REST API integration
+
+For agents that don't support MCP, use Grapevine's REST API directly:
+
+```javascript
+const response = await fetch('https://api.getgrapevine.ai/v1/search', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${process.env.GRAPEVINE_API_KEY}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    query: 'authentication patterns',
+    filters: { sources: ['github_code', 'notion'] }
+  })
+});
+```
+
+## Agent examples
+
+<CardGroup>
+  <Card title="OpenCode" href="/examples/opencode">
+    Setup instructions for OpenCode MCP integration
+  </Card>
+</CardGroup>
+
+## Best practices
+
+- **Filter by relevance**: Use source filters to focus on code-related content
+- **Context-aware queries**: Ask specific questions about your codebase
+- **Verify information**: Cross-reference agent suggestions with your knowledge
+- **Iterate and improve**: Provide feedback to help agents learn your patterns
+
+## Security considerations
+
+- All queries are authenticated and authorized based on your organization's policies
+- Sensitive information is filtered out automatically
+- Audit logs are available for compliance requirements
+- Data remains within your organization's control

@@ -1,0 +1,51 @@
+---
+title: OpenCode
+description: Setup OpenCode MCP integration with Grapevine
+---
+
+This guide shows how to configure OpenCode to use Grapevine for company context.
+
+## Prerequisites
+
+- An OpenCode installation
+- A Grapevine account with API access
+
+## Setup
+
+OpenCode [does not yet support Oauth for Remote MCP servers](https://github.com/sst/opencode/issues/988). Therefore, we will use `mcp-remote` as a workaround, so we don't have to hardcode any API credentials.
+
+### 1. Configure MCP server
+
+First, add the MCP server to your OpenCode configuration:
+
+```json opencode.json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "grapevine": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "https://mcp.getgrapevine.ai"]
+    },
+  },
+}
+
+```
+
+
+### 2. Authentication
+
+Login manually once so that OpenCode picks up your credentials:
+
+```zsh
+npx -y mcp-remote https://mcp.getgrapevine.ai
+```
+
+Your browser will open, login with the same account you use to access your [Grapevine dashboard](https://app.getgrapevine.ai).
+
+### 3. Test the connection
+
+Restart OpenCode and verify the connection by asking a question that requires company context:
+
+```
+Use the grapevine mcp. What authentication patterns do we use in our codebase?
+```
