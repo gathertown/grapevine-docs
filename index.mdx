@@ -1,42 +1,50 @@
 ---
-title: Quickstart
-description: Get started with Grapevine in minutes
+title: What is Grapevine?
 ---
 
-Get up and running with Grapevine to search your company's knowledge base.
+Grapevine ingests updates from all of your work platforms (Slack, docs, meetings, etc.), and continuously re-structures them to be performant with work-AI Agents.
 
-Before you can build with Grapevine, you'll need to create an account and complete the in-product onboarding so we have data to work with.
+# How it works
 
-<Steps>
-  <Step title="Create an account">
-    Go to [app.getgrapevine.ai](https://app.getgrapevine.ai) and sign up with your work email. 
-  </Step>
-  <Step title="Complete in-product onboarding">
-    We'll ask a few quick questions to help us start to understand your organization, then ask you to setup your first integrations.
-  </Step>
-  <Step title="Write company-specific context">
-    We recommend writing a short blurb about what your company does, and any key terms or decisions that are important to your organization. For example, if you have a "v1" and "v2" version of your product, this is a great place to call this out.
-    This context can be edited at any time, and will be explicitly injected into any [`ask_agent`](/features/mcp-api#ask-agent) calls.
-  </Step>
-  <Step title="Create an API key">
-    Once you see the API Key section in the sidebar, you can create a new API key. Check out the [authentication guide](/getting-started/authentication) for more details!
-  </Step>
-</Steps>
+1. **Connect** - Integrates with your data sources through secure OAuth connections and API keys
+2. **Ingest** - Continuously ingests your data with real-time webhook processing, backfills, and periodic API syncs
+3. **Process** - Indexes your data with heuristics like recency, relevance, and semantic understanding. When helpful, Grapevine will create new artifacts to cut out human noise
+4. **Search** - Exposes the [search tools](/features/mcp-api#search-tools) for your agent to use
 
-## Next steps
+### What does Grapevine ingest?
 
-<CardGroup cols={2}>
-  <Card title="Connect more sources" icon="plug" href="/connectors/slack">
-    Add more data sources to expand your knowledge base
-  </Card>
-  
-  <Card title="Set up webhooks" icon="webhook" href="/features/webhooks">
-    Get notified about document changes
-  </Card>
-  <Card title="Run your first API call" icon="terminal" href="/features/rest-api">
-    Use the REST API to ask a question of your company context
-  </Card>
-  <Card title="Build your first Context-Aware Agent" icon="robot" href="/features/mcp-api">
-    Use the MCP API to build your first context-aware agent
-  </Card>
-</CardGroup>
+Grapevine is intended to ingest data from all the platforms where your work is done. Currently, this includes:
+
+- **Communication platforms** - [Slack](/connectors/slack), [Gmail](/connectors/google-email), [Gather](/connectors/gather), [Gong](/connectors/gong)
+- **Documentation** - [Notion](/connectors/notion), [Confluence](/connectors/confluence), [Google Drive](/connectors/google-drive)
+- **Code repositories** - [GitHub](/connectors/github)
+- **Project management** - [Linear](/connectors/linear), [Jira](/connectors/jira)
+- **CRMs** - [HubSpot](/connectors/hubspot), [Salesforce](/connectors/salesforce)
+
+Check out the [Reference](/features/api-reference) page for a full list, and more details on each connector.
+
+
+### Example Search Loop
+
+```mermaid
+sequenceDiagram
+    participant Agent
+    participant Tools
+    Note over Agent: Input<br/>"What did Alice say about the login bug?"
+    Agent->>Tools: semantic_search("login bug", {sources: [SLACK, LINEAR]})
+    Tools-->>Agent: Slack messages + Linear issues
+    Agent->>Tools: get_document("linear:TEAM-123")
+    Tools-->>Agent: Full Linear issue context
+    Agent->>Tools: semantic_search("Alice login", {sources: [SLACK]})
+    Tools-->>Agent: Alice's Slack messages
+    Note over Agent: Output<br/>Synthesized answer with citations
+```
+
+# How do I try Grapevine?
+
+### Self-hosting
+We are working on making Grapevine **self-hostable**, so you can run it on your own infrastructure. If you are interested in trying out this experience, contact us.
+
+### Using our hosted MCP server
+
+The quickest way to get started is by using our hosted MCP server at `https://mcp.getgrapevine.ai`. For more information, check out our [Quickstart guide](/index).
