@@ -15,7 +15,7 @@
         "group": "Getting started",
         "pages": [
           "index",
-          "getting-started/what-is-grapevine",
+          "getting-started/quickstart",
           "getting-started/security-privacy",
           "getting-started/authentication"
         ]
