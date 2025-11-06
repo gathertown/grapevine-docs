@@ -43,7 +43,8 @@
           "connectors/hubspot",
           "connectors/gong",
           "connectors/gather",
-          "connectors/zendesk"
+          "connectors/zendesk",
+          "connectors/trello"
         ]
       }
     ]
