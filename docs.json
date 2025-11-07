@@ -41,7 +41,8 @@
           "connectors/google-drive",
           "connectors/google-email",
           "connectors/hubspot",
-          "connectors/gong"
+          "connectors/gong",
+          "connectors/gather"
         ]
       }
     ]

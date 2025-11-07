@@ -1,41 +1,39 @@
 ---
 title: Gather
-description: Connect Gather to index meeting recordings and transcripts
+description: Connect Gather to index your Gather Meetings
 ---
 
-The Gather connector indexes meeting recordings, transcripts, and notes from your Gather space.
+The Gather connector indexes meeting chat messages, transcripts, and notes from your Gather space.
 
 ## What gets indexed
 
 - Meeting transcripts
 - Meeting metadata
 - Meeting notes
-- Screen shares (OCR text extraction)
-- Chat messages during meetings
+- Chat messages
 
-## Setup
+## Automatic Setup
 
 <Steps>
-  <Step title="Create API key">
-    1. In Gather, go to **Space Settings → API**
-    2. Create a new API key
-    3. Copy the API key
+  <Step title="Connect from Gather App">
+    1. In Gather, go to **Integrations**
+    2. Click Configure AI
   </Step>
 
+
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Gather meetings. The initial sync may take time depending on the number of recorded meetings in your space.
+  </Step>
+</Steps>
+
+## Manual Setup (Alternative)
+
+<Steps>
   <Step title="Connect to Grapevine">
     1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Gather**
-    2. Enter your API key
-    3. Click **Save**
+    2. Follow setup directions
   </Step>
 
-  <Step title="Configure webhook (optional)">
-    For real-time updates, configure webhooks in Gather:
-
-    1. In Gather, go to **Space Settings → Webhooks**
-    2. Create a new webhook
-    3. Set URL to: `https://webhooks.getgrapevine.ai/gather`
-    4. Select events: **Meeting ended**, **Recording available**
-  </Step>
 
   <Step title="Indexing begins">
     Grapevine will automatically begin indexing your Gather meetings. The initial sync may take time depending on the number of recorded meetings in your space.
@@ -58,10 +56,7 @@ The Gather connector respects Gather permissions:
 
 - **Initial sync** - Begins automatically after setup completion
 - **Ongoing syncs** - Real-time updates via webhooks keep your index current
-- **Deletions** - Deleted meetings are removed from the index automatically
 
 ## Limitations
 
-- Only recorded meetings are indexed
 - Video files are not stored (only transcripts are indexed)
-- Deleted meetings are removed from the index
