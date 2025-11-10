@@ -3,30 +3,31 @@ title: Reference
 description: Complete reference documentation for the Grapevine MCP tools, parameters, and data structures
 ---
 
-import SearchFilters from '/snippets/search-filters.mdx';
+import SearchFilters from "/snippets/search-filters.mdx";
 
 ## Document Sources and IDs
 
 Below is a list of all currently supported `source`s
 
-| Source Value         | Connector                                        | Document ID Format Pattern                       | Example                                       |
-|----------------------|--------------------------------------------------|--------------------------------------------------|-----------------------------------------------|
-| `SLACK`              | [Slack](/connectors/slack)                      | `{channel_id}_{date}`                            | `C1234567890_2024-01-15`                      |
-| `GITHUB_PRS`         | [GitHub](/connectors/github)                    | `{repo_id}_pr_{pr_number}`                       | `123456789_pr_12345`                          |
-| `GITHUB_CODE`        | [GitHub](/connectors/github)                    | `github_file_{owner}/{repo}/{file_path}`         | `github_file_octocat/Hello-World/README.md`   |
-| `NOTION`             | [Notion](/connectors/notion)                    | `notion_page_{page_id}`                          | `notion_page_abcdefgh-1234-6789-0zxy-w01234567890` |
-| `LINEAR`             | [Linear](/connectors/linear)                    | `issue_{issue_id}`                               | `issue_11223344-5566-7788-9900-aabbccddeeff`  |
-| `GOOGLE_DRIVE`       | [Google Drive](/connectors/google-drive)        | `google_drive_file_{file_id}`                    | `google_drive_file_1a2b3c4d5e6f7g8h9i0j`      |
-| `GOOGLE_EMAIL`       | [Google Email](/connectors/google-email)        | `google_email_message_{message_id}`              | `google_email_message_18a1b2c3d4e5f6g7`       |
-| `JIRA`               | [Jira](/connectors/jira)                        | `jira_issue_{issue_id}`                          | `jira_issue_10218`                            |
-| `CONFLUENCE`         | [Confluence](/connectors/confluence)            | `confluence_page_{page_id}`                      | `confluence_page_123456789`                   |
-| `HUBSPOT_DEAL`       | [HubSpot](/connectors/hubspot)                  | `hubspot_deal_{record_id}`                       | `hubspot_deal_12345678`                       |
-| `HUBSPOT_CONTACT`    | [HubSpot](/connectors/hubspot)                  | `hubspot_contact_{record_id}`                    | `hubspot_contact_99887766`                    |
-| `HUBSPOT_TICKET`     | [HubSpot](/connectors/hubspot)                  | `hubspot_ticket_{record_id}`                     | `hubspot_ticket_87654321`                     |
-| `HUBSPOT_COMPANY`    | [HubSpot](/connectors/hubspot)                  | `hubspot_company_{record_id}`                    | `hubspot_company_11223344`                    |
-| `SALESFORCE`         | [Salesforce](/connectors/salesforce)            | `salesforce_{object_type}_{record_id}`           | `salesforce_account_001xx000003DGb2AAG`       |
-| `GONG`               | [Gong](/connectors/gong)                        | `gong_call_{call_id}`                            | `gong_call_1234567890123456789`               |
-| `GATHER`             | [Gather](/connectors/gather)                    | `gather_meeting_{meeting_id}`                    | `gather_meeting_a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
+| Source Value      | Connector                                | Document ID Format Pattern               | Example                                               |
+| ----------------- | ---------------------------------------- | ---------------------------------------- | ----------------------------------------------------- |
+| `SLACK`           | [Slack](/connectors/slack)               | `{channel_id}_{date}`                    | `C1234567890_2024-01-15`                              |
+| `GITHUB_PRS`      | [GitHub](/connectors/github)             | `{repo_id}_pr_{pr_number}`               | `123456789_pr_12345`                                  |
+| `GITHUB_CODE`     | [GitHub](/connectors/github)             | `github_file_{owner}/{repo}/{file_path}` | `github_file_octocat/Hello-World/README.md`           |
+| `NOTION`          | [Notion](/connectors/notion)             | `notion_page_{page_id}`                  | `notion_page_abcdefgh-1234-6789-0zxy-w01234567890`    |
+| `LINEAR`          | [Linear](/connectors/linear)             | `issue_{issue_id}`                       | `issue_11223344-5566-7788-9900-aabbccddeeff`          |
+| `GOOGLE_DRIVE`    | [Google Drive](/connectors/google-drive) | `google_drive_file_{file_id}`            | `google_drive_file_1a2b3c4d5e6f7g8h9i0j`              |
+| `GOOGLE_EMAIL`    | [Google Email](/connectors/google-email) | `google_email_message_{message_id}`      | `google_email_message_18a1b2c3d4e5f6g7`               |
+| `JIRA`            | [Jira](/connectors/jira)                 | `jira_issue_{issue_id}`                  | `jira_issue_10218`                                    |
+| `CONFLUENCE`      | [Confluence](/connectors/confluence)     | `confluence_page_{page_id}`              | `confluence_page_123456789`                           |
+| `HUBSPOT_DEAL`    | [HubSpot](/connectors/hubspot)           | `hubspot_deal_{record_id}`               | `hubspot_deal_12345678`                               |
+| `HUBSPOT_CONTACT` | [HubSpot](/connectors/hubspot)           | `hubspot_contact_{record_id}`            | `hubspot_contact_99887766`                            |
+| `HUBSPOT_TICKET`  | [HubSpot](/connectors/hubspot)           | `hubspot_ticket_{record_id}`             | `hubspot_ticket_87654321`                             |
+| `HUBSPOT_COMPANY` | [HubSpot](/connectors/hubspot)           | `hubspot_company_{record_id}`            | `hubspot_company_11223344`                            |
+| `SALESFORCE`      | [Salesforce](/connectors/salesforce)     | `salesforce_{object_type}_{record_id}`   | `salesforce_account_001xx000003DGb2AAG`               |
+| `GONG`            | [Gong](/connectors/gong)                 | `gong_call_{call_id}`                    | `gong_call_1234567890123456789`                       |
+| `GATHER`          | [Gather](/connectors/gather)             | `gather_meeting_{meeting_id}`            | `gather_meeting_a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
+| `ZENDESK`         | [Zendesk](/connectors/zendesk)           | `zendesk_ticket_{ticket_id}`             | `zendesk_ticket_123`                                  |
 
 ## SearchFilters
 
@@ -44,20 +45,22 @@ The [`filters.provenance`](/features/api-reference#searchfilters) parameter allo
 **Provenance Filtering Requirements**
 
 To use provenance filtering, you must:
+
 - Specify **exactly one source** in `filters.sources`
 - Use a source that supports provenance (see table below)
 
 Attempting to use provenance with multiple sources or an unsupported source will result in an error.
+
 </Warning>
 
 Supported sources and provenance value formats:
 
-| Source | Provenance Value Format |
-| --- | --- |
-| [`SLACK`](/connectors/slack) | Channel name **OR** channel ID |
-| [`GITHUB_PRS`](/connectors/github) | Repository name |
-| [`GITHUB_CODE`](/connectors/github) | Repository name |
-| [`LINEAR`](/connectors/linear) | Team name |
+| Source                              | Provenance Value Format        |
+| ----------------------------------- | ------------------------------ |
+| [`SLACK`](/connectors/slack)        | Channel name **OR** channel ID |
+| [`GITHUB_PRS`](/connectors/github)  | Repository name                |
+| [`GITHUB_CODE`](/connectors/github) | Repository name                |
+| [`LINEAR`](/connectors/linear)      | Team name                      |
 
 ## File Attachments
 
@@ -68,9 +71,11 @@ The [Agent Tools](/features/mcp-api#agent-tools) can accept file attachments as 
     Filename with extension (e.g., `"document.pdf"`, `"image.png"`)
   </ParamField>
 
-  <ParamField path="mimetype" type="string" required>
-    MIME type of the file (e.g., `"application/pdf"`, `"image/png"`, `"text/plain"`)
-  </ParamField>
+{" "}
+<ParamField path="mimetype" type="string" required>
+  MIME type of the file (e.g., `"application/pdf"`, `"image/png"`,
+  `"text/plain"`)
+</ParamField>
 
   <ParamField path="content" type="string" required>
     Base64 encoded file content

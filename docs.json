@@ -42,7 +42,8 @@
           "connectors/google-email",
           "connectors/hubspot",
           "connectors/gong",
-          "connectors/gather"
+          "connectors/gather",
+          "connectors/zendesk"
         ]
       }
     ]
