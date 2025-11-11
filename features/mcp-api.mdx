@@ -361,7 +361,40 @@ Streaming variant of `ask_agent` that returns events as they occur. Use this whe
 
 <Tabs>
   <Tab title="Request">
-    Same as `ask_agent` above.
+    <ParamField path="query" type="string" required>
+      User question to answer with agentic search
+    </ParamField>
+
+    <ParamField path="files" type="array">
+      Optional file attachments as list of objects with:
+      - `name` (string) - Filename
+      - `mimetype` (string) - MIME type
+      - `content` (string) - Base64 encoded file content
+    </ParamField>
+
+    <ParamField path="previous_response_id" type="string">
+      Prior response ID to continue a conversation
+    </ParamField>
+
+    <ParamField path="output_format" type="string">
+      Output format: use `'slack'` for Slack markdown formatting
+    </ParamField>
+
+    <ParamField path="agent_prompt_override" type="string">
+      Override the default system prompt
+    </ParamField>
+
+    <ParamField path="reasoning_effort" type="string" default="medium">
+      OpenAI reasoning effort level: `'minimal'`, `'low'`, `'medium'`, or `'high'`
+    </ParamField>
+
+    <ParamField path="verbosity" type="string">
+      Response detail level: `'low'`, `'medium'`, or `'high'`
+    </ParamField>
+
+    <ParamField path="disable_citations" type="boolean" default={false}>
+      Disable citations in the response
+    </ParamField>
   </Tab>
 
   <Tab title="Response">
