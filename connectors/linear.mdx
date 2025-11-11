@@ -20,31 +20,24 @@ The Linear connector indexes issues, comments, and related content from your Lin
 
 ## Setup
 
+<Warning>
+  **Legacy API Key Authentication Deprecated:** If you previously connected Linear using an API key, please migrate to OAuth for improved security and better webhook reliability. To migrate, disconnect your existing connection and reconnect using the **Connect Linear Account** button.
+</Warning>
+
 <Steps>
   <Step title="Connect to Grapevine">
     1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Linear**
-    2. Click the link to open **Linear Settings → Security & Access**
-    3. Create a new API key with **Read permissions**
-    4. Copy the API key (starts with `lin_api_`)
+    2. Click **Connect Linear Account** to begin the authorization process
   </Step>
 
-  <Step title="Enter API key">
-    1. Return to the Grapevine integration page
-    2. Paste your Linear API key
-    3. Click **Save**
-  </Step>
-
-  <Step title="Configure webhook">
-    1. Click the link to open **Linear Settings → API**
-    2. Create a new webhook with URL: `https://[your-tenant].ingest.getgrapevine.ai/webhooks/linear`
-    3. Select events: **Comments**, **Users**, **Issues**, **Projects**
-    4. Copy the signing secret
-    5. Return to Grapevine and paste the signing secret
-    6. Click **Save**
+  <Step title="Authorize connection">
+    1. You'll be redirected to Linear to authorize the Grapevine integration
+    2. Review the requested permissions (read access to issues, comments, and teams)
+    3. Click **Authorize** to grant access
   </Step>
 
   <Step title="Indexing begins">
-    Grapevine will automatically begin indexing your Linear issues and comments. The initial sync may take time depending on the number of issues in your workspace.
+    You'll be redirected back to Grapevine and the connection will be saved automatically. Grapevine will begin indexing your Linear issues and comments. The initial sync may take time depending on the number of issues in your workspace.
   </Step>
 </Steps>
 
@@ -53,7 +46,7 @@ The Linear connector indexes issues, comments, and related content from your Lin
 The Linear connector respects Linear permissions:
 
 - Only public teams are indexed (private teams are excluded)
-- API key has access only to teams and issues visible to the key owner
+- The integration has read-only access to teams and issues visible to the authorized account
 - Archived issues are not indexed by default
 
 ## Sync behavior
