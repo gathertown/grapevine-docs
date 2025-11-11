@@ -292,6 +292,65 @@ This is the simplest way to get a comprehensive answer with citations - it is a 
 
 </Accordion>
 
+<Accordion title="ask_agent_fast" icon="zap">
+
+A faster variant of `ask_agent` that provides quick answers without the deep research process. Use this when you need rapid responses and don't require extensive document synthesis.
+
+<Tabs>
+  <Tab title="Request">
+    <ParamField path="query" type="string" required>
+      User question to answer quickly
+    </ParamField>
+
+    <ParamField path="files" type="array">
+      Optional file attachments as list of objects with:
+      - `name` (string) - Filename
+      - `mimetype` (string) - MIME type
+      - `content` (string) - Base64 encoded file content
+    </ParamField>
+
+    <ParamField path="previous_response_id" type="string">
+      Prior response ID to continue a conversation
+    </ParamField>
+
+    <ParamField path="output_format" type="string">
+      Output format: use `'slack'` for Slack markdown formatting
+    </ParamField>
+
+    <ParamField path="agent_prompt_override" type="string">
+      Override the default system prompt
+    </ParamField>
+
+    <ParamField path="reasoning_effort" type="string" default="medium">
+      OpenAI reasoning effort level: `'minimal'`, `'low'`, `'medium'`, or `'high'`
+    </ParamField>
+
+    <ParamField path="verbosity" type="string">
+      Response detail level: `'low'`, `'medium'`, or `'high'`
+    </ParamField>
+
+    <ParamField path="disable_citations" type="boolean" default={false}>
+      Disable citations in the response
+    </ParamField>
+  </Tab>
+
+  <Tab title="Response">
+    <ResponseField name="answer" type="string">
+      The answer to the query
+    </ResponseField>
+
+    <ResponseField name="response_id" type="string">
+      Unique identifier for this response, can be used in `previous_response_id` for follow-up queries
+    </ResponseField>
+
+    <ResponseField name="events" type="array">
+      Array of events that occurred during the search process
+    </ResponseField>
+  </Tab>
+</Tabs>
+
+</Accordion>
+
 <Accordion title="ask_agent_streaming" icon="stream">
 
 Streaming variant of `ask_agent` that returns events as they occur. Use this when you need real-time progress updates during agentic search.
