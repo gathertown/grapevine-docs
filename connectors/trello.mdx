@@ -1,0 +1,73 @@
+---
+title: Trello
+description: Connect Trello to index boards, lists, and cards
+---
+
+The Trello connector indexes cards and their content from your Trello boards.
+
+## What gets indexed
+
+- Cards (titles, descriptions, comments, checklists, attachments)
+- Card metadata (board name, list name, labels, assigned members, due dates)
+
+<Note>
+  Private boards stay private, and are only searchable by users who have access to them. Boards and lists are not independently searchable—they appear as metadata on cards.
+</Note>
+
+## Setup
+
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Trello**
+    2. Click **Connect Trello Account** to begin the authorization process
+  </Step>
+
+  <Step title="Install Grapevine Power-Up">
+    1. You'll be redirected to Trello to authorize the Grapevine Power-Up
+    2. Review the requested permissions
+    3. Click **Allow** to grant access
+
+    <Note>
+      You need admin permissions on your Trello workspace to install the Power-Up.
+    </Note>
+  </Step>
+
+  <Step title="Authorize connection">
+    1. Complete the OAuth 1.0 authentication handshake
+    2. The Grapevine Power-Up will be installed as a headless Power-Up
+    3. Authorization will apply to all boards accessible to your account
+  </Step>
+
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Trello boards and cards. The initial sync may take time depending on the number of boards and cards in your workspace.
+  </Step>
+</Steps>
+
+## Permissions
+
+The Trello connector respects Trello permissions:
+
+- All boards accessible to the authorized account are indexed
+- Private boards remain private and are only searchable by authorized users
+- Board-level permissions are preserved in search results
+- Admin permissions required for initial setup and to index private boards
+
+<Note>
+  Admin privileges are required to receive webhook events from private boards. If the authorized account loses admin status in an organization, private boards in that organization will no longer sync.
+</Note>
+
+## Sync behavior
+
+<Note>
+  The initial indexing processes all accessible boards and cards. For large workspaces (100+ boards), rate limiting is applied and the sync may take several hours. Real-time updates are configured automatically via webhooks.
+</Note>
+
+- **Initial sync** - Begins automatically after authorization
+- **Ongoing syncs** - Real-time updates via webhooks keep your index current
+- **Deletions** - Deleted cards and boards are removed from the index automatically
+
+## Limitations
+
+- Card attachment metadata is indexed, but file contents are not processed
+- Archived boards and cards are not indexed
+- Admin permissions required to index private boards
