@@ -1,0 +1,41 @@
+---
+title: Cursor
+description: Setup Cursor MCP integration with Grapevine
+---
+
+This guide shows how to configure Cursor to use Grapevine for company context.
+
+## Prerequisites
+
+- Cursor installed
+- A Grapevine tenant
+
+## Setup with OAuth (Recommended)
+
+<Steps>
+  <Step title="Open your Cursor MCP configuration">
+You can find this in your Cursor settings > Tools & MCP > New MCP server, or by running `open ~/.cursor/mcp.json` in your terminal.
+  </Step>
+  <Step title="Add Grapevine MCP server">
+    Add the following configuration to the file:
+
+```json mcp.json
+{
+  "mcpServers": {
+    "grapevine": {
+      "type": "streamable-http",
+      "url": "https://mcp.getgrapevine.ai"
+    }
+  }
+}
+```
+
+If you already have other MCP servers configured, add `grapevine` to the existing `mcpServers` object.
+  </Step>
+  <Step title="Login to Grapevine ">
+  Your browser will open to authenticate you with Grapevine. Make sure to login using the same account you use to access your [Grapevine dashboard](https://app.getgrapevine.ai).
+  </Step>
+</Steps>
+
+Cursor's AI agent will now be able to access Grapevine's tools to search your company's internal context.
+
