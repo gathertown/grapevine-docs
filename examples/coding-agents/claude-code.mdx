@@ -1,0 +1,53 @@
+---
+title: Claude Code 
+description: Setup Claude Code integration with Grapevine
+---
+
+This guide shows how to configure Claude Code to use Grapevine for company context.
+
+## Prerequisites
+
+- Claude Code CLI installed
+- A Grapevine tenant
+
+## Setup with OAuth (Recommended)
+
+<Steps>
+  <Step title="Add the MCP server">
+  Run the following command to add the Grapevine MCP server:
+
+  ```bash
+  claude mcp add --transport http grapevine https://mcp.getgrapevine.ai
+  ```
+  </Step>
+  <Step title="Authenticate">
+    Launch `claude`, and run `/mcp`. Navigate to the `grapevine` server then "Authenticate"
+  Your browser will open to authenticate you with Grapevine. Make sure to login using the same account you use to access your [Grapevine dashboard](https://app.getgrapevine.ai).
+  </Step>
+  <Step title="Confirm Tools are available">
+    Run `/mcp` again and confirm that you see the status is connected and authenticated. The [Grapevine MCP tools](/features/mcp-api) should now be available to your Claude instance.
+  </Step>
+</Steps>
+
+## Setup with API Key
+If you don't want to handle interactive authentication (e.g. you're running Claude in a script, or you're develpoing on a remote server without a browser), you can use an API key instead.
+
+<Steps>
+<Step title="Create an API key">
+  Navigate to the [API Keys page](https://app.getgrapevine.ai/api-keys) in the Grapevine admin dashboard and create a new API key. For more information on API keys, see the [authentication guide](/getting-started/authentication).
+  </Step>
+  <Step title="Add the MCP server">
+  Run the following command to add the Grapevine MCP server with your API key:
+
+  ```bash
+  claude mcp add --transport http grapevine https://mcp.getgrapevine.ai --header "Authorization: Bearer YOUR_API_KEY"
+  ```
+  Make sure to replace `YOUR_API_KEY` with your actual API key.
+  </Step>
+  <Step title="Confirm Tools are available">
+    Run `/mcp` in `claude`and confirm that you see the status is connected and authenticated. The [Grapevine MCP tools](/features/mcp-api) should now be available to your Claude instance.
+  </Step>
+</Steps>
+
+Claude will now be able to access Grapevine's tools to search your company's internal context.
+

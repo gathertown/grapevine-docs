@@ -30,6 +30,19 @@
         ]
       },
       {
+        "group": "Examples",
+        "pages": [
+          {
+            "group": "Augment your Coding agent",
+            "pages": [
+              "examples/coding-agents/opencode",
+              "examples/coding-agents/cursor",
+              "examples/coding-agents/claude-code"
+            ]
+          }
+        ]
+      },
+      {
         "group": "Connectors",
         "pages": [
           "connectors/slack",
