@@ -1,0 +1,41 @@
+---
+title: Zendesk
+description: Connect Zendesk to index tickets and comments
+---
+
+## What gets indexed
+
+- **Tickets** - All ticket fields including custom fields
+- **Ticket metrics** - All ticket metrics, ex. reply time, wait time, reopens.
+- **Ticket people** - Brand, Group, Assignee, Requester, Submitter, Followers, Contributors
+- **Ticket comments** - All comments for each ticket
+
+## Setup
+
+<Steps>
+  <Step title="Be a Zendesk Admin">
+    We use admin-only API's for incremental data syncing
+  </Step>
+  <Step title="Connect to Grapevine">
+    In Grapevine, go to the [**Zendesk
+    Integration**](https://app.getgrapevine.ai/integrations/zendesk)
+  </Step>
+  <Step title="Authorize Grapevine">
+    Click **Connect** and log into Zendesk (if needed), review the permission
+    request and authorize. You will be redirected back to Grapevine and your
+    data will begin syncing immediately.
+  </Step>
+</Steps>
+
+## Permissions
+
+The Zendesk connector makes all synced tickets visible in Grapevine.
+
+## Sync behavior
+
+- **Initial full sync** - Begins automatically after authorization, progresses backwards in time so latest data should be available quickly.
+- **Ongoing syncs** - Runs every hour to capture incremental ticket updates
+
+## Limitations
+
+- Zendesk permissions are not respected so a user may see a result in Grapevine they do not have access to view on Zendesk.
