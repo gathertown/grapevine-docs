@@ -1,11 +1,7 @@
 ---
-title: Zendesk (beta)
+title: Zendesk
 description: Connect Zendesk to index tickets and comments
 ---
-
-## Status
-
-Zendesk is in beta and will be widely available upon marketplace approval.
 
 ## What gets indexed
 
@@ -41,5 +37,8 @@ The Zendesk connector makes all synced tickets visible in Grapevine.
 
 ## Limitations
 
-- Admin access is required
-- Ongoing syncs are performed on a schedule so ticket data is updated on that schedule
+- Admin access is required to connect and sync data.
+- Ticket updates follow the sync schedule, so changes in Zendesk may not appear in Grapevine immediately.
+- Zendesk permission models are not applied in Grapevine.
+  - This is intentional so that helpdesk information can be broadly searchable rather than restricted to Zendesk Agent roles. If this is a concern for your workflow or data policies, please reach out.
+  - As a result, users may see citation links to Zendesk tickets they would not normally have access to within Zendesk.
