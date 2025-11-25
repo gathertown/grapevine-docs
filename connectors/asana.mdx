@@ -1,0 +1,57 @@
+---
+title: Asana
+description: Connect Asana to index tasks and comments
+---
+
+## What gets indexed
+
+- **Tasks** - Most task fields including custom fields
+- **Task comments** - All comments on each task
+- **Subtasks** - Same as Tasks
+
+## Setup
+
+<Note>
+  You must be a **Super Admin** in Asana to properly authorize the Grapevine
+  app. The preferred way to authorize is via Service Account. If you do not have
+  access to a service account an administrator can OAuth.
+</Note>
+
+<Steps>
+  <Step title="Connect to Grapevine">
+    In Grapevine, go to the [Asana
+    Integration](https://app.getgrapevine.ai/integrations/asana)
+  </Step>
+  <Step title="Create a Service Account">
+    In Asana create a full permission [service
+    account](https://app.asana.com/admin/0/apps/serviceaccounts). And record the
+    generated token. [Learn more about service
+    accounts](https://help.asana.com/s/article/service-accounts).
+  </Step>
+  <Step title="Authenticate Grapevine">
+    Paste the service account token into the [Grapevine Asana
+    Integration](https://app.getgrapevine.ai/integrations/asana) and click
+    connect.
+  </Step>
+</Steps>
+
+## Permissions
+
+<Note>
+  Grapevine requests full access because some APIs (specifically the memberships
+  API) are not resource scoped. Grapevine only reads data via workspace,
+  project, task, subtask, story, membership and team endpoints.
+</Note>
+
+The Asana connector makes all synced tasks visible to people who can see them in Asana.
+
+## Sync behavior
+
+- **Initial full sync** - Begins automatically after authorization, progresses backwards in time so latest data should be available quickly.
+- **Ongoing syncs** - Runs every 10 minutes to capture incremental task updates
+
+## Limitations
+
+- A service account is highly recommended to connect and sync data.
+- Public projects are widely available in Grapevine **but** tasks that have been made "public" will not be widely available in Grapevine due to Asana API limitations.
+- Task updates follow the sync schedule, so changes in Asana may not appear in Grapevine immediately.

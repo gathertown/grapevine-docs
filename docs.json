@@ -57,7 +57,8 @@
           "connectors/gong",
           "connectors/gather",
           "connectors/zendesk",
-          "connectors/trello"
+          "connectors/trello",
+          "connectors/asana"
         ]
       }
     ]

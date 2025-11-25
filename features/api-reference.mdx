@@ -28,6 +28,7 @@ Below is a list of all currently supported `source`s
 | `GONG`            | [Gong](/connectors/gong)                 | `gong_call_{call_id}`                    | `gong_call_1234567890123456789`                       |
 | `GATHER`          | [Gather](/connectors/gather)             | `gather_meeting_{meeting_id}`            | `gather_meeting_a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
 | `ZENDESK`         | [Zendesk](/connectors/zendesk)           | `zendesk_ticket_{ticket_id}`             | `zendesk_ticket_123`                                  |
+| `Asana`           | [Asana](/connectors/asana)               | `asana_task_{task_gid}`                  | `asana_task_1211943015676531`                         |
 
 ## SearchFilters
 
@@ -72,6 +73,7 @@ The [Agent Tools](/features/mcp-api#agent-tools) can accept file attachments as 
   </ParamField>
 
 {" "}
+
 <ParamField path="mimetype" type="string" required>
   MIME type of the file (e.g., `"application/pdf"`, `"image/png"`,
   `"text/plain"`)
