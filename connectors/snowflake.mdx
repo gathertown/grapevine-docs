@@ -1,0 +1,186 @@
+---
+title: Snowflake
+description: Connect Snowflake to query your data warehouse using natural language
+---
+
+The Snowflake connector enables natural language querying of your Snowflake data warehouse through [Cortex Analyst](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst). Users can ask questions in plain English and get results without writing SQL.
+
+## What you can do
+
+- **Natural language queries** - Ask questions like "What were our top 10 customers by revenue last quarter?" and get results
+- **Direct SQL queries** - Execute read-only SQL queries against your Snowflake warehouse
+- **Semantic models** - Register YAML-based semantic models or Snowflake semantic views to define your data structure
+
+## Prerequisites
+
+Before connecting Snowflake to Grapevine, you need:
+
+- A Snowflake account with `ACCOUNTADMIN` role (or equivalent permissions)
+- [Cortex Analyst](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst) enabled in your Snowflake account
+- A [semantic model](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst/semantic-model-spec) or [semantic view](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst/semantic-views) configured in Snowflake
+
+## Setup
+
+### 1. Create a role for Grapevine (recommended)
+
+Create a dedicated read-only role for Grapevine queries. Run the following SQL in Snowflake:
+
+```sql
+-- Create a role for Grapevine
+CREATE ROLE IF NOT EXISTS GRAPEVINE_ROLE;
+
+-- Grant warehouse usage
+GRANT USAGE ON WAREHOUSE <your_warehouse> TO ROLE GRAPEVINE_ROLE;
+
+-- Grant database and schema access
+GRANT USAGE ON DATABASE <your_database> TO ROLE GRAPEVINE_ROLE;
+GRANT USAGE ON SCHEMA <your_database>.<your_schema> TO ROLE GRAPEVINE_ROLE;
+
+-- Grant read access to tables
+GRANT SELECT ON ALL TABLES IN SCHEMA <your_database>.<your_schema> TO ROLE GRAPEVINE_ROLE;
+GRANT SELECT ON FUTURE TABLES IN SCHEMA <your_database>.<your_schema> TO ROLE GRAPEVINE_ROLE;
+
+-- Grant access to stages (if using YAML semantic models)
+GRANT READ ON STAGE <your_database>.<your_schema>.<your_stage> TO ROLE GRAPEVINE_ROLE;
+
+-- Grant Cortex access
+GRANT DATABASE ROLE SNOWFLAKE.CORTEX_USER TO ROLE GRAPEVINE_ROLE;
+
+-- Grant the role to your user
+GRANT ROLE GRAPEVINE_ROLE TO USER <your_username>;
+```
+
+<Note>
+  Replace placeholders (`<your_warehouse>`, `<your_database>`, etc.) with your actual Snowflake object names.
+</Note>
+
+### 2. Create an OAuth security integration
+
+Create an OAuth integration in Snowflake for Grapevine authentication:
+
+```sql
+CREATE OR REPLACE SECURITY INTEGRATION GRAPEVINE_OAUTH
+  TYPE = OAUTH
+  ENABLED = TRUE
+  OAUTH_CLIENT = CUSTOM
+  OAUTH_CLIENT_TYPE = 'CONFIDENTIAL'
+  OAUTH_REDIRECT_URI = 'https://auth.getgrapevine.ai/callback/snowflake'
+  OAUTH_ISSUE_REFRESH_TOKENS = TRUE
+  OAUTH_REFRESH_TOKEN_VALIDITY = 7776000  -- 90 days
+  PRE_AUTHORIZED_ROLES_LIST = ('GRAPEVINE_ROLE');
+```
+
+### 3. Get your OAuth credentials
+
+Retrieve the client ID and secret:
+
+```sql
+SELECT SYSTEM$SHOW_OAUTH_CLIENT_SECRETS('GRAPEVINE_OAUTH');
+```
+
+### 4. Connect to Grapevine
+
+<Steps>
+  <Step title="Open Snowflake settings">
+    In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Snowflake**.
+  </Step>
+
+  <Step title="Enter your credentials">
+    Enter your **Snowflake Account Identifier** (e.g., `myorg-account123` from your Snowflake URL).
+
+    For the OAuth credentials, you have two options:
+
+    - **Quick setup** - Paste the JSON output from `SYSTEM$SHOW_OAUTH_CLIENT_SECRETS` to auto-fill the Client ID and Secret
+    - **Manual entry** - Enter the **OAuth Client ID** and **OAuth Client Secret** individually
+  </Step>
+
+  <Step title="Authorize">
+    Click **Connect with OAuth** and authorize Grapevine in the Snowflake login prompt.
+  </Step>
+</Steps>
+
+### 5. Register a semantic model
+
+After connecting, register at least one semantic model to enable natural language queries.
+
+<Tabs>
+  <Tab title="YAML semantic model">
+    If you have a YAML semantic model file stored in a Snowflake stage:
+
+    1. Click **Add Semantic Model**
+    2. Select **Semantic Model (YAML file in stage)**
+    3. Enter a **Name** for the model
+    4. Select a **Stage Path**, then edit the path to include your YAML file (e.g., `@MY_STAGE/models/sales.yaml`)
+    5. Add a **Description** (optional)
+    6. Select a **Warehouse** for query execution
+    7. Click **Add Model**
+  </Tab>
+
+  <Tab title="Semantic view">
+    If you have a [semantic view](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst/semantic-views) in Snowflake:
+
+    1. Click **Add Semantic Model**
+    2. Select **Semantic View (database object)**
+    3. Enter a **Name** for the model
+    4. Select the **Semantic View**
+    5. Add a **Description** (optional)
+    6. Select a **Warehouse** for query execution
+    7. Click **Add Model**
+  </Tab>
+</Tabs>
+
+<Info>
+  Adding a description helps the agent understand what data is available in each semantic model, improving the quality of natural language query responses.
+</Info>
+
+## Using the connector
+
+Once configured, users can query Snowflake data through the Grapevine MCP server.
+
+### Natural language queries
+
+Ask questions in plain English. Cortex Analyst translates them to SQL and returns results:
+
+```
+What were our top 10 products by revenue last month?
+```
+
+```
+Show me the average order value by customer segment for Q4 2024
+```
+
+### Direct SQL queries
+
+You can also execute read-only SQL directly:
+
+```sql
+SELECT product_name, SUM(revenue) as total_revenue
+FROM sales
+WHERE order_date >= '2024-01-01'
+GROUP BY product_name
+ORDER BY total_revenue DESC
+LIMIT 10;
+```
+
+## Permissions
+
+- Queries execute using the OAuth user's Snowflake permissions
+- Snowflake role-based access control (RBAC) is respected
+- Users only see data they have access to in Snowflake
+- All queries are read-only (SELECT only)
+
+## Sync behavior
+
+Unlike other connectors, Snowflake does not index data. Queries are executed in real-time against your Snowflake warehouse.
+
+- **No data stored** - Query results are not persisted in Grapevine
+- **Live queries** - Each query runs against current Snowflake data
+- **Token refresh** - OAuth tokens are automatically refreshed
+
+## Limitations
+
+- Natural language queries require a configured semantic model
+- SQL queries are read-only (no INSERT, UPDATE, DELETE)
+- Query results are limited to 1,000 rows by default
+- Large result sets may be truncated
+- Cortex Analyst availability varies by Snowflake region
