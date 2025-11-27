@@ -16,6 +16,10 @@ The Trello connector indexes cards and their content from your Trello boards.
 
 ## Setup
 
+<Warning>
+  **Use a dedicated service account.** The Trello connection is tied to the authorizing user's account. If that user is removed from your Trello organization or their account is deleted, webhooks will stop working and syncing will break. To avoid disruption, connect using a dedicated service account that won't be removed.
+</Warning>
+
 <Steps>
   <Step title="Connect to Grapevine">
     1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Trello**
@@ -55,6 +59,15 @@ The Trello connector respects Trello permissions:
 <Note>
   Admin privileges are required to receive webhook events from private boards. If the authorized account loses admin status in an organization, private boards in that organization will no longer sync.
 </Note>
+
+<Warning>
+  **What happens if the authorizing user is removed:**
+  - **User removed from organization** — Webhooks are deleted and real-time syncing stops. Previously indexed content remains but becomes stale.
+  - **User account deleted** — The connection breaks entirely. You'll need to reconnect with a different account.
+  - **User loses admin privileges** — Private boards stop syncing, but public boards continue to work.
+
+  To restore syncing, disconnect the integration in Grapevine and reconnect with an active admin account.
+</Warning>
 
 ## Sync behavior
 
