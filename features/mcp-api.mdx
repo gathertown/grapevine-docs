@@ -9,11 +9,13 @@ import SourceDescription from '/snippets/source-description.mdx';
 
 ## Overview
 
-The Grapevine MCP provides 2 categories of tools that can be used to query your Company Context:
+The Grapevine MCP provides 3 categories of tools that can be used to query your Company Context:
 
 [Search Tools](#search-tools) are the core tools, intended to be used by an agent to find specific documents that match a query. These tools are intended to be used in sequence, and execute quickly. They are modeled after the tools that applications like Claude Code or Cline use to navigate a codebase.
 
-In addition to the Search Tools, we provide a pre-packaged [Agent Tool](#agent-tools) that is adept at using the Search Tools to research your Company Context and answer arbitrary questions. 
+In addition to the Search Tools, we provide a pre-packaged [Agent Tool](#agent-tools) that is adept at using the Search Tools to research your Company Context and answer arbitrary questions.
+
+[Data Warehouse Tools](#data-warehouse-tools) allow you to query structured data warehouses like Snowflake using natural language or direct SQL for analytical queries. 
 
 ### Configuration
 
@@ -415,6 +417,134 @@ Streaming variant of `ask_agent` that returns events as they occur. Use this whe
     </ResponseField>
 
     **Event types:** `status`, `tool_call`, `tool_result`, `final_answer`, `message`
+  </Tab>
+</Tabs>
+
+</Accordion>
+
+### Data Warehouse Tools
+
+These tools allow you to query structured data warehouses for analytical insights. They require a connected data warehouse (e.g., Snowflake) with semantic models configured.
+
+<Note>
+Data warehouse tools are READ-ONLY. They cannot modify, insert, update, or delete data.
+</Note>
+
+<Accordion title="ask_data_warehouse" icon="database">
+
+Query structured data warehouses using natural language. The tool translates your question into SQL using AI (e.g., Snowflake Cortex Analyst) and executes it against the data warehouse.
+
+**When to use:**
+- Get metrics, numbers, or quantitative data (revenue, counts, averages)
+- Perform aggregations (top 10, sum, count, group by)
+- Compare time periods (last quarter vs this quarter)
+- Filter or slice data by dimensions (by region, by product, by customer)
+
+**Difference from search tools:**
+- `ask_data_warehouse`: Queries structured data tables for metrics and analytics
+- `semantic_search`/`keyword_search`: Searches unstructured documents (Slack, GitHub, Notion)
+
+<Tabs>
+  <Tab title="Request">
+    <ParamField path="question" type="string" required>
+      Natural language question to query the data warehouse
+
+      **Examples:**
+      - "What were our top 10 customers by revenue last quarter?"
+      - "Show me sales by region for Q4"
+      - "How many support tickets did we close last month?"
+      - "What's the average deal size for enterprise customers?"
+    </ParamField>
+
+    <ParamField path="source" type="string" default="snowflake">
+      Data warehouse source. Currently supported: `snowflake`
+    </ParamField>
+
+    <ParamField path="semantic_model_id" type="string">
+      Specific semantic model ID to use. If not provided, uses the tenant's default or first available model.
+    </ParamField>
+
+    <ParamField path="limit" type="integer" default={100}>
+      Maximum number of rows to return (min: 1, max: 1000)
+    </ParamField>
+  </Tab>
+
+  <Tab title="Response">
+    <ResponseField name="success" type="boolean">
+      Whether the query executed successfully
+    </ResponseField>
+
+    <ResponseField name="results" type="object[]">
+      Array of result rows, each row is an object mapping column names to values
+    </ResponseField>
+
+    <ResponseField name="generated_sql" type="string">
+      The SQL query that was generated and executed
+    </ResponseField>
+
+    <ResponseField name="explanation" type="string">
+      Optional explanation from the data warehouse's AI about the query
+    </ResponseField>
+
+    <ResponseField name="row_count" type="integer">
+      Number of rows returned
+    </ResponseField>
+
+    <ResponseField name="execution_time_ms" type="integer">
+      Query execution time in milliseconds
+    </ResponseField>
+
+    <ResponseField name="error" type="string">
+      Error message if the query failed
+    </ResponseField>
+  </Tab>
+</Tabs>
+
+</Accordion>
+
+<Accordion title="execute_data_warehouse_sql" icon="code">
+
+Execute a READ-ONLY SQL query directly on a structured data warehouse. Use this when you have a specific SELECT query to run and want precise control over the query structure.
+
+<Warning>
+This tool is strictly READ-ONLY. The following operations are forbidden: `INSERT`, `UPDATE`, `DELETE`, `DROP`, `CREATE`, `ALTER`, `TRUNCATE`, `MERGE`, `REPLACE`, `GRANT`, `REVOKE`.
+</Warning>
+
+<Tabs>
+  <Tab title="Request">
+    <ParamField path="sql" type="string" required>
+      SQL SELECT query to execute
+
+      **Example:**
+      ```sql
+      SELECT customer_id, SUM(revenue) AS total_revenue
+      FROM orders
+      GROUP BY customer_id
+      ORDER BY total_revenue DESC
+      LIMIT 10
+      ```
+    </ParamField>
+
+    <ParamField path="source" type="string" default="snowflake">
+      Data warehouse source. Currently supported: `snowflake`
+    </ParamField>
+
+    <ParamField path="warehouse" type="string">
+      Warehouse/compute cluster to use for query execution. Uses user's default if not specified.
+    </ParamField>
+
+    <ParamField path="limit" type="integer" default={100}>
+      Maximum number of rows to return (min: 1, max: 1000)
+    </ParamField>
+  </Tab>
+
+  <Tab title="Response">
+    Returns a formatted markdown string with query results displayed as a table.
+
+    **Security:**
+    - Uses user's OAuth token for authentication
+    - Respects native data warehouse permissions (RBAC, row-level security)
+    - All queries are logged for audit purposes
   </Tab>
 </Tabs>
 
