@@ -1,0 +1,97 @@
+---
+title: Attio
+description: Connect Attio to index companies, people, and deals from your CRM
+---
+
+The Attio connector indexes CRM data including companies, people, and deals from your Attio workspace.
+
+## What gets indexed
+
+- Companies (name, domains, description, categories, estimated ARR, location)
+- People (name, email, phone, job title, company associations, location)
+- Deals (name, value, pipeline stage, expected close date, owner, associated companies and people)
+- Notes and tasks (embedded within deal records)
+
+## Setup
+
+<Note>
+  You must be a **workspace admin** in Attio to authorize the Grapevine integration.
+</Note>
+
+<Steps>
+  <Step title="Enable required objects in Attio">
+    Before connecting, ensure the objects you want to index are enabled in your Attio workspace:
+
+    1. In Attio, go to **Workspace settings** > **Data** > **Objects**
+    2. Enable the objects you want Grapevine to index (Companies, People, Deals)
+
+    <Warning>
+      **Important:** On Attio's Free plan, only Companies and People are enabled by default. Deals must be explicitly enabled by a workspace admin. If Deals is not enabled, the connector will skip indexing deals and continue with other available objects.
+    </Warning>
+  </Step>
+
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Attio**
+    2. Click **Connect Attio Account**
+    3. You'll be redirected to Attio for authorization
+  </Step>
+
+  <Step title="Authorize the app">
+    1. Log into Attio (if needed)
+    2. Review the requested permissions
+    3. Click **Allow** to authorize
+    4. You'll be redirected back to Grapevine
+  </Step>
+
+  <Step title="Indexing begins">
+    Grapevine will automatically begin indexing your Attio data. The initial sync may take time depending on the amount of data in your workspace.
+  </Step>
+</Steps>
+
+## Permissions
+
+The Attio connector requests the following OAuth scopes:
+
+| Scope | Access | Purpose |
+|-------|--------|---------|
+| User Management | Read | View workspace members for attribution |
+| Records | Read | Access companies, people, and deals |
+| Object Configuration | Read | Read object schemas and attributes |
+| List Entries | Read | Access list entries and pipeline data |
+| List Configuration | Read | Read list and pipeline configurations |
+| Comments | Read | Access comments and threads on records |
+| Notes | Read | Read notes attached to records |
+| Tasks | Read | Read tasks linked to records |
+| Meetings | Read | Access meeting records |
+| Call Recordings | Read | Access call recordings and transcripts |
+| Webhooks | Read-write | Register webhooks for real-time updates |
+
+<Info>
+  Some scopes like Webhooks and Call Recordings are requested to support future features such as real-time sync and meeting transcript indexing. Grapevine only requests read access where possible and never modifies your Attio data.
+</Info>
+
+## Sync behavior
+
+- **Initial sync** - Indexes all available records from enabled objects
+- **Incremental updates** - New and updated records are synced periodically
+- **Deletions** - Deleted records are removed from the index automatically
+
+## Object availability by plan
+
+Attio has different object availability based on your subscription plan:
+
+| Plan | Available Objects |
+|------|------------------|
+| Free | Companies, People + 1 additional (Deals, Users, or Workspaces) |
+| Plus | Companies, People + 3 additional (Deals, Users, Workspaces) |
+| Pro  | Up to 12 standard objects + custom objects |
+
+<Info>
+  If an object is not enabled in your Attio workspace, Grapevine will gracefully skip it and continue indexing the objects that are available.
+</Info>
+
+## Limitations
+
+- Custom objects are not currently indexed
+- Only records from enabled standard objects are indexed
+- Notes and tasks are embedded within deal documents rather than indexed separately

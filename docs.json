@@ -54,6 +54,7 @@
           "connectors/google-drive",
           "connectors/google-email",
           "connectors/hubspot",
+          "connectors/attio",
           "connectors/snowflake",
           "connectors/gong",
           "connectors/gather",
