@@ -21,6 +21,22 @@ POST https://mcp.getgrapevine.ai/v1/ask
   The natural language question
 </ParamField>
 
+<ParamField path="fast" type="boolean" default={false}>
+  Enable fast mode for quicker responses. When `true`, uses `ask_agent_fast` which is optimized for speed over thoroughness.
+</ParamField>
+
+<ParamField path="promptOverride" type="string">
+  Override the default system prompt with a custom prompt
+</ParamField>
+
+<ParamField path="verbosity" type="string">
+  Response detail level: `'low'`, `'medium'`, or `'high'`
+</ParamField>
+
+<ParamField path="levelOfThinking" type="string">
+  Reasoning effort level: `'minimal'`, `'low'`, `'medium'`, or `'high'`
+</ParamField>
+
 ## Response
 
 <ResponseExample>
@@ -45,5 +61,17 @@ curl -X POST https://mcp.getgrapevine.ai/v1/ask \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What is our return policy?"
+  }'
+```
+
+### Fast mode query
+
+```bash
+curl -X POST https://api.getgrapevine.ai/v1/ask \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What is our return policy?",
+    "fast": true
   }'
 ```
