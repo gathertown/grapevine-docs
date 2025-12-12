@@ -1,0 +1,55 @@
+---
+title: Fireflies
+description: Connect Fireflies to index meeting transcripts
+---
+
+## What gets indexed
+
+- **Transcripts** - Full transcript (sentences), AI summary notes, participants and metadata
+
+## Setup
+
+<Note>
+  It is recommended to be a **Super Admin** in Fireflies to properly authorize
+  the Grapevine app. If this is unavailable to you then only transcripts
+  available to the provided API key will be ingested.
+</Note>
+
+<Steps>
+  <Step title="Connect to Grapevine">
+    In Grapevine, go to the [Fireflies
+    Integration](https://app.getgrapevine.ai/integrations/fireflies)
+  </Step>
+  <Step title="Create a Super Admin">
+    In Fireflies create a full permission [super
+    admin](https://guide.fireflies.ai/articles/7734409426-learn-about-the-super-admin-role).
+  </Step>
+  <Step title="Create a Super Admin">
+    In Fireflies get your [API
+    key](https://app.fireflies.ai/settings#DeveloperSettings), preferably from a
+    super admin.
+  </Step>
+  <Step title="Authenticate Grapevine">
+    Paste the API key into the [Grapevine Fireflies
+    Integration](https://app.getgrapevine.ai/integrations/fireflies) and click
+    connect.
+  </Step>
+</Steps>
+
+## Permissions
+
+The fireflies connector makes ingested meeting transcripts _only_ visible to the organizer and
+participants. This access is granted via email addresses that were invited to the meeting. This has
+implications on transcripts from "live meetings" and uploaded transcripts. These will likely only
+be visibile to the organizer. Please contact us if you are interested in a more permissive model
+for fireflies transcript visibility.
+
+## Sync behavior
+
+- **Initial full sync** - Begins automatically after authorization, progresses backwards in time so latest data should be available quickly.
+- **Ongoing syncs** - Runs every hour to capture new transcripts
+
+## Limitations
+
+- A super admin is highly recommended to connect and sync data.
+- Transcript ingestion follows the sync schedule, so new transcripts may not appear in Grapevine immediately.

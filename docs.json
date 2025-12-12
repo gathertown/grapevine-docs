@@ -45,22 +45,23 @@
       {
         "group": "Connectors",
         "pages": [
-          "connectors/slack",
-          "connectors/notion",
-          "connectors/github",
+          "connectors/asana",
+          "connectors/attio",
           "connectors/confluence",
-          "connectors/jira",
-          "connectors/linear",
+          "connectors/fireflies",
+          "connectors/gather",
+          "connectors/github",
+          "connectors/gong",
           "connectors/google-drive",
           "connectors/google-email",
           "connectors/hubspot",
-          "connectors/attio",
+          "connectors/jira",
+          "connectors/linear",
+          "connectors/notion",
+          "connectors/slack",
           "connectors/snowflake",
-          "connectors/gong",
-          "connectors/gather",
-          "connectors/zendesk",
           "connectors/trello",
-          "connectors/asana"
+          "connectors/zendesk"
         ]
       }
     ]
