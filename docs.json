@@ -59,6 +59,7 @@
           "connectors/jira",
           "connectors/linear",
           "connectors/notion",
+          "connectors/pylon",
           "connectors/slack",
           "connectors/snowflake",
           "connectors/trello",

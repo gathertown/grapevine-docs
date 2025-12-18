@@ -1,0 +1,53 @@
+---
+title: Pylon
+description: Connect Pylon to search your customer support issues and conversations
+---
+
+The Pylon connector syncs your customer support issues from [Pylon](https://usepylon.com) into Grapevine, making them searchable alongside your other company knowledge.
+
+## What gets indexed
+
+- **Issues** - Support tickets and conversations including title, description, status, priority, and tags
+- **Issue metadata** - Assignee, requester, account, team, and custom fields
+- **Metrics** - First response time, resolution time, and CSAT scores
+- **Linked issues** - References to external issues in Linear, Asana, Jira, or GitHub
+
+## Setup
+
+<Steps>
+  <Step title="Get your Pylon API token">
+    You must be a Pylon admin to create an API token.
+
+    1. Log in to your [Pylon workspace](https://app.usepylon.com)
+    2. Go to **Settings > Developer > API Tokens**
+    3. Generate a new API token with read access
+    4. Copy the API token
+  </Step>
+
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Pylon**
+    2. Paste your API token
+    3. Click **Connect**
+  </Step>
+
+  <Step title="Wait for initial sync">
+    Grapevine will begin syncing your Pylon issues. The initial sync may take some time depending on your issue volume.
+  </Step>
+</Steps>
+
+## Permissions
+
+- All indexed Pylon issues are visible to all users in your Grapevine organization
+- The API key must have read access to issues, accounts, contacts, users, and teams
+
+## Sync behavior
+
+- **Initial sync** - Syncs all issues from the past 2 years
+- **Ongoing syncs** - New and updated issues are synced every 30 minutes
+- **Reference data** - Account, contact, user, and team information is refreshed daily
+
+## Limitations
+
+- Issues older than 2 years are not indexed
+- Sync frequency is every 30 minutes (not real-time)
+- All users in your organization can see all indexed issues (no per-issue permissions)
