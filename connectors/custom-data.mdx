@@ -1,0 +1,194 @@
+---
+title: Custom Data
+description: Upload and index your own structured data through the API
+---
+
+The Custom Data connector allows you to ingest your own documents and structured data into Grapevine via API. Unlike other connectors that sync from external services, Custom Data lets you programmatically upload content from any source.
+
+## What gets indexed
+
+- **Document content** - The main text content of each document
+- **Document metadata** - Name, description, and custom fields you define
+- **Custom fields** - User-defined fields (text, number, or date) based on your schema
+
+## Setup
+
+### 1. Create a data type
+
+Before ingesting documents, create a data type that defines the schema for your documents.
+
+<Steps>
+  <Step title="Open Custom Data settings">
+    In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Custom Data**.
+  </Step>
+
+  <Step title="Create a new data type">
+    Click **Add Data Type** and configure:
+
+    - **Display name** - A human-readable name (e.g., "Product Documentation")
+    - **Description** - Optional description of what this data type contains
+    - **Custom fields** - Define additional fields for your documents
+  </Step>
+
+  <Step title="Define custom fields (optional)">
+    Add custom fields to capture structured metadata:
+
+    | Field type | Description | Example values |
+    |------------|-------------|----------------|
+    | `text` | String values | `"v2.1"`, `"Marketing"` |
+    | `number` | Numeric values | `42`, `3.14` |
+    | `date` | ISO 8601 date strings | `"2024-01-15"`, `"2024-01-15T10:30:00Z"` |
+
+    For each field, specify:
+    - **Name** - Field identifier (used in API)
+    - **Type** - One of `text`, `number`, or `date`
+    - **Required** - Whether the field must be provided
+    - **Description** - Optional description (improves search relevance)
+  </Step>
+</Steps>
+
+### 2. Get your API key
+
+To ingest documents via API, you need an API key:
+
+1. Go to [**Settings > API Keys**](https://app.getgrapevine.ai/settings/api-keys)
+2. Click **Create API Key**
+3. Copy and securely store your key
+
+## Ingesting documents
+
+### Single document
+
+```bash
+curl -X POST "https://api.getgrapevine.ai/custom-documents/{slug}" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Getting Started Guide",
+    "content": "This guide walks you through the setup process...",
+    "description": "Onboarding documentation for new users",
+    "version": "2.1",
+    "category": "Documentation"
+  }'
+```
+
+Replace `{slug}` with your data type's slug (shown in the Custom Data settings).
+
+### Batch ingestion
+
+Ingest up to 100 documents in a single request:
+
+```bash
+curl -X POST "https://api.getgrapevine.ai/custom-documents/{slug}" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "documents": [
+      {
+        "name": "Document 1",
+        "content": "Content for document 1..."
+      },
+      {
+        "name": "Document 2",
+        "content": "Content for document 2...",
+        "category": "Guide"
+      }
+    ]
+  }'
+```
+
+### Document fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | Yes | Document title |
+| `content` | Yes | Main document content |
+| `description` | No | Brief summary of the document |
+| Custom fields | Varies | Fields defined in your data type schema |
+
+### Response
+
+Successful ingestion returns the document ID:
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+For batch requests:
+
+```json
+{
+  "ids": [
+    "550e8400-e29b-41d4-a716-446655440000",
+    "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+  ]
+}
+```
+
+## Updating documents
+
+Update an existing document by ID:
+
+```bash
+curl -X PUT "https://api.getgrapevine.ai/custom-documents/{slug}/{id}" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Updated Title",
+    "content": "Updated content...",
+    "version": "2.2"
+  }'
+```
+
+<Note>
+  Updates replace the entire document. Include all fields you want to preserve.
+</Note>
+
+## Retrieving documents
+
+Fetch a document by ID:
+
+```bash
+curl "https://api.getgrapevine.ai/custom-documents/{slug}/{id}" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Deleting documents
+
+Delete a document by ID:
+
+```bash
+curl -X DELETE "https://api.getgrapevine.ai/custom-documents/{slug}/{id}" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Deleting a data type
+
+You can delete a data type from the Custom Data settings page in Grapevine.
+
+<Warning>
+  Deleting a data type permanently removes all documents of that type from the search index. This action cannot be undone.
+</Warning>
+
+## Permissions
+
+- Custom Data documents are accessible to all users in your organization
+- Documents are indexed with tenant-level permissions (no per-document access control)
+- API keys are scoped to your organization
+
+## Sync behavior
+
+- **Real-time indexing** - Documents are indexed immediately after ingestion
+- **Instant updates** - Changes are reflected in search results within seconds
+- **Deletion** - Deleted documents are removed from the search index
+
+## Limitations
+
+- Maximum 2 MB payload size per request
+- Maximum 100 documents per batch request
+- Custom field types limited to: `text`, `number`, `date`
+- Document IDs are auto-generated (you cannot specify custom IDs)
+- No partial updates (must send complete document on update)
+- Data type slugs must be unique and contain only lowercase letters, numbers, hyphens, or underscores

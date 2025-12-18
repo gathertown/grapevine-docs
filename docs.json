@@ -48,6 +48,7 @@
           "connectors/asana",
           "connectors/attio",
           "connectors/confluence",
+          "connectors/custom-data",
           "connectors/fireflies",
           "connectors/gather",
           "connectors/github",
