@@ -1,0 +1,63 @@
+---
+title: Monday.com
+description: Connect Monday.com to index items and comments
+---
+
+The Monday.com connector indexes items (tasks) and their content from your Monday.com workspaces.
+
+## What gets indexed
+
+- Items (task names and descriptions)
+- Column values (custom fields, dates, statuses, people, etc.)
+- Updates (comments on items)
+- Item metadata (board, group, workspace, creator, subscribers)
+
+<Note>
+  Boards and groups are not independently searchable—they appear as metadata on items.
+</Note>
+
+## Setup
+
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Monday.com**
+    2. Click **Connect Monday.com Account** to begin the authorization process
+  </Step>
+
+  <Step title="Authorize connection">
+    1. You'll be redirected to Monday.com to authorize the Grapevine integration
+    2. Review the requested permissions
+    3. Click **Allow** to grant access
+
+    <Note>
+      You need admin permissions on your Monday.com account to authorize the integration.
+    </Note>
+  </Step>
+
+  <Step title="Indexing begins">
+    You'll be redirected back to Grapevine and the connection will be saved automatically. Grapevine will begin indexing your Monday.com items. The initial sync may take time depending on the number of boards and items in your workspaces.
+  </Step>
+</Steps>
+
+## Permissions
+
+- Only public boards are indexed (private and shareable boards are excluded)
+- All indexed items are visible to all users in the Grapevine tenant
+- Admin permissions required for initial setup
+
+## Sync behavior
+
+<Note>
+  The initial indexing processes all accessible boards and items. For large accounts with many boards, the sync may take some time. Ongoing syncs use the Activity Logs API for efficient incremental updates.
+</Note>
+
+- **Initial sync** - Begins automatically after authorization, indexes all boards and items
+- **Ongoing syncs** - Runs periodically using Activity Logs to capture incremental changes
+- **Deletions** - Deleted and archived items are automatically removed from the index
+
+## Limitations
+
+- Private and shareable boards are not indexed (only public boards)
+- Attachments are not indexed (only item content and column values)
+- Archived items are removed from the index
+- Item updates follow the sync schedule, so changes in Monday.com may not appear in Grapevine immediately

@@ -58,6 +58,7 @@
           "connectors/hubspot",
           "connectors/jira",
           "connectors/linear",
+          "connectors/monday",
           "connectors/notion",
           "connectors/pylon",
           "connectors/slack",
