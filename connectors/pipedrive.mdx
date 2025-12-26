@@ -1,0 +1,56 @@
+---
+title: Pipedrive
+description: Connect Pipedrive to index deals, contacts, organizations, and products
+---
+
+The Pipedrive connector indexes CRM data including deals, persons (contacts), organizations, and products from your Pipedrive account.
+
+## What gets indexed
+
+- **Deals** - Title, value, status, pipeline, stage, and associated metadata
+- **Persons** - Contact names, emails, phones, and organization associations
+- **Organizations** - Company names, addresses, and related data
+- **Products** - Product catalog with names, codes, and pricing
+- **Notes** - Deal notes (embedded within deal documents)
+- **Activities** - Calls, meetings, tasks associated with deals (embedded within deal documents)
+
+<Note>
+  Notes and activities are indexed as part of their associated deals, not as separate searchable documents.
+</Note>
+
+## Setup
+
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Pipedrive**
+    2. Click **Connect Pipedrive Account** to begin the authorization process
+  </Step>
+
+  <Step title="Authorize connection">
+    1. You'll be redirected to Pipedrive to authorize the Grapevine integration
+    2. Log into Pipedrive if needed
+    3. Review the requested permissions
+    4. Click **Allow** to grant access
+  </Step>
+
+  <Step title="Indexing begins">
+    You'll be redirected back to Grapevine and the connection will be saved automatically. Grapevine will begin indexing your Pipedrive data. The initial sync may take time depending on the amount of data in your account.
+  </Step>
+</Steps>
+
+## Permissions
+
+- All indexed Pipedrive data is visible to all users in the Grapevine tenant
+- Admin permissions required for initial setup
+
+## Sync behavior
+
+- **Initial sync** - Begins automatically after authorization, indexes all deals, persons, organizations, and products
+- **Ongoing syncs** - Runs periodically to capture incremental changes based on update timestamps
+- **Deletions** - Deleted records are removed from the index during sync
+
+## Limitations
+
+- Notes and activities are only indexed when associated with a deal
+- All Pipedrive data is indexed (no selective filtering by pipeline or visibility)
+- Updates follow the sync schedule, so changes in Pipedrive may not appear in Grapevine immediately
