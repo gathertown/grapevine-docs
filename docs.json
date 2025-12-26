@@ -60,6 +60,7 @@
           "connectors/linear",
           "connectors/monday",
           "connectors/notion",
+          "connectors/pipedrive",
           "connectors/pylon",
           "connectors/slack",
           "connectors/snowflake",
