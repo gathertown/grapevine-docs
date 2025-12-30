@@ -1,0 +1,97 @@
+---
+title: Figma
+description: Connect Figma to index design files and comments
+---
+
+The Figma connector indexes design files, FigJam boards, and comments from your Figma workspace.
+
+## What gets indexed
+
+- **Design files** - File names, page names, and document structure
+- **Components** - Component names and descriptions
+- **Text content** - All text elements within designs
+- **Comments** - Comment threads, replies, and resolution status
+- **FigJam boards** - Same content types as design files
+
+<Note>
+  Both Figma design files and FigJam boards are indexed. The connector extracts text content directly from TEXT nodes in your designs, making your copy searchable.
+</Note>
+
+## Setup
+
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Figma**
+    2. Click **Connect Figma Account** to begin the authorization process
+  </Step>
+
+  <Step title="Authorize connection">
+    1. You'll be redirected to Figma to authorize the Grapevine integration
+    2. Log into Figma if needed
+    3. Review the requested permissions
+    4. Click **Allow access** to grant access
+  </Step>
+
+  <Step title="Select teams">
+    1. After authorization, you'll be redirected back to Grapevine
+    2. Select which Figma teams you want to index
+    3. Click **Save** to confirm your selection
+  </Step>
+
+  <Step title="Indexing begins">
+    Grapevine will begin indexing files from your selected teams. The initial sync may take time depending on the number of files and their complexity.
+  </Step>
+</Steps>
+
+## Permissions
+
+- All indexed Figma content is visible to all users in the Grapevine tenant
+- Admin permissions required for initial setup
+
+## Sync behavior
+
+<Warning>
+  **Real-time updates require a paid Figma plan.** Webhooks are only available on Figma Professional, Organization, or Enterprise plans. If your team is on a Starter or Free plan, updates will only sync during periodic backfills.
+</Warning>
+
+- **Initial sync** - Indexes all files from selected teams
+- **Real-time updates** - Via webhooks for file updates, deletions, and new comments (paid plans only)
+- **Periodic sync** - Runs periodically to catch any missed updates and sync teams without webhook support
+- **Deletions** - Deleted files are removed from the index automatically
+
+## Rate limits
+
+Figma enforces API rate limits that vary based on your **seat type** and plan. The user who connects Figma to Grapevine must have a **Dev or Full seat** for acceptable performance.
+
+<Warning>
+  **Use a Dev or Full seat to connect.** View and Collab seats have severely restricted rate limits (as low as 6 requests per month), which will prevent Grapevine from syncing your files effectively.
+</Warning>
+
+### Dev/Full seat rate limits
+
+| Tier | Starter | Professional | Organization | Enterprise |
+|------|---------|--------------|--------------|------------|
+| Tier 1 | 10/min | 15/min | 20/min | 20/min |
+| Tier 2 | 25/min | 50/min | 100/min | 100/min |
+| Tier 3 | 50/min | 100/min | 150/min | 150/min |
+
+### View/Collab seat rate limits (not recommended)
+
+| Tier | Starter | Professional | Organization | Enterprise |
+|------|---------|--------------|--------------|------------|
+| Tier 1 | 6/month | 6/month | 6/month | 6/month |
+| Tier 2 | 5/min | 5/min | 5/min | 5/min |
+| Tier 3 | 10/min | 10/min | 10/min | 10/min |
+
+<Note>
+  For the best experience, ensure the user connecting Figma has a **Dev or Full seat** on a **Professional or higher plan**. This provides both real-time webhooks and adequate API rate limits for syncing.
+</Note>
+
+For more details, see [Figma's rate limit documentation](https://developers.figma.com/docs/rest-api/rate-limits/).
+
+## Limitations
+
+- Real-time webhooks require Figma Professional plan or higher (Starter/Free plans use periodic sync only)
+- Rate limits may slow initial sync for large workspaces
+- File attachments and embedded images are not indexed (only text and metadata)
+- Only files from selected teams are indexed
