@@ -49,6 +49,7 @@
           "connectors/attio",
           "connectors/confluence",
           "connectors/custom-data",
+          "connectors/figma",
           "connectors/fireflies",
           "connectors/gather",
           "connectors/github",
