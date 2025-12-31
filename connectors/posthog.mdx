@@ -1,0 +1,137 @@
+---
+title: PostHog
+description: Connect PostHog to index analytics configuration and query event data with HogQL
+---
+
+The PostHog connector indexes your analytics configuration (dashboards, insights, feature flags, experiments, surveys) and enables direct querying of event data using HogQL.
+
+## What gets indexed
+
+- **Dashboards** - Names, descriptions, and dashboard tiles
+- **Insights** - Saved charts and queries with their filter configurations
+- **Feature flags** - Flag keys, names, rollout percentages, and targeting rules
+- **Experiments** - A/B tests with parameters and feature flag associations
+- **Surveys** - Survey configurations, questions, and targeting
+- **Annotations** - Date markers and notes on your analytics
+
+<Note>
+  The connector indexes your PostHog configuration and metadata, not raw event data. Event data is queried directly via the HogQL tool (see below).
+</Note>
+
+## HogQL query tool
+
+In addition to indexing configuration, the PostHog connector enables **direct querying of your event data** using HogQL (PostHog's SQL-like query language).
+
+### What you can query
+
+- **Events** - All tracked events with properties
+- **Persons** - User profiles and properties
+- **Sessions** - Session data and metrics
+
+### Example HogQL queries
+
+```sql
+-- Count pageviews in the last 7 days
+SELECT count() FROM events
+WHERE event = '$pageview'
+AND timestamp > now() - INTERVAL 7 DAY
+
+-- Daily unique users
+SELECT toDate(timestamp) as day, count(DISTINCT distinct_id) as users
+FROM events
+GROUP BY day
+ORDER BY day DESC
+
+-- Top events by count
+SELECT event, count() as total
+FROM events
+GROUP BY event
+ORDER BY total DESC
+LIMIT 10
+```
+
+<Warning>
+  The HogQL tool is **read-only**. You cannot modify data through Grapevine.
+</Warning>
+
+## Setup
+
+<Steps>
+  <Step title="Generate a Personal API Key">
+    1. In PostHog, go to **Settings** > **Personal API Keys**
+    2. Click **Create Personal API Key**
+    3. Give it a descriptive name (e.g., "Grapevine Integration")
+    4. Copy the generated key
+
+    <Note>
+      Personal API keys provide access based on your user permissions. Ensure you have access to the projects you want to index.
+    </Note>
+  </Step>
+
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **PostHog**
+    2. Enter your **Personal API Key**
+    3. Enter your **PostHog Host**:
+       - US Cloud: `https://us.posthog.com`
+       - EU Cloud: `https://eu.posthog.com`
+       - Self-hosted: Your PostHog instance URL
+    4. Click **Connect**
+  </Step>
+
+  <Step title="Select projects">
+    1. After connecting, Grapevine will fetch your accessible projects
+    2. Select which projects you want to index
+    3. Click **Save** to confirm your selection
+  </Step>
+
+  <Step title="Indexing begins">
+    Grapevine will begin indexing your PostHog configuration from the selected projects. The initial sync may take time depending on the number of dashboards, insights, and feature flags.
+  </Step>
+</Steps>
+
+## Required permissions
+
+Your Personal API Key needs read access to the following resources:
+
+| Resource | Purpose |
+|----------|---------|
+| Annotations | Index date markers |
+| Dashboards | Index dashboard configurations |
+| Experiments | Index A/B test configurations |
+| Feature Flags | Index flag configurations |
+| Insights | Index saved charts and queries |
+| Projects | List and access project data |
+| Query API | Execute HogQL queries on event data |
+| Surveys | Index survey configurations |
+
+<Note>
+  Personal API keys inherit your user permissions. If you can access a resource in the PostHog UI, your API key can access it too.
+</Note>
+
+## Sync behavior
+
+- **Initial sync** - Indexes all dashboards, insights, feature flags, experiments, surveys, and annotations from selected projects
+- **Ongoing syncs** - Runs periodically to capture changes
+- **Deletions** - Deleted and archived items are removed from the index
+
+## Rate limits
+
+PostHog enforces API rate limits on different endpoint categories:
+
+| Endpoint Type | Rate Limit |
+|---------------|------------|
+| Analytics endpoints | 240/min, 1,200/hour |
+| Query endpoint (HogQL) | 2,400/hour |
+| CRUD operations | 480/min, 4,800/hour |
+| Feature flag evaluation | 600/min |
+
+<Note>
+  For high-volume workspaces, rate limits may slow the initial sync. The connector implements automatic retry with exponential backoff.
+</Note>
+
+## Limitations
+
+- Raw event data is not indexed (query it via HogQL instead)
+- HogQL queries are read-only
+- Self-hosted instances must be accessible from Grapevine's infrastructure
+- Personal API keys are scoped to user permissions
