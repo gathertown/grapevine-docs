@@ -61,6 +61,7 @@
           "connectors/monday",
           "connectors/notion",
           "connectors/pipedrive",
+          "connectors/posthog",
           "connectors/pylon",
           "connectors/slack",
           "connectors/snowflake",
