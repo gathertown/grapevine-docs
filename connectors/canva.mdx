@@ -1,0 +1,80 @@
+---
+title: Canva
+description: Connect Canva to index design metadata
+---
+
+The Canva connector indexes metadata about your Canva designs, making them searchable by title, owner, and other attributes.
+
+## What gets indexed
+
+- **Design titles** - Names of your Canva designs
+- **Design metadata** - Page count, creation date, last modified date
+- **Owner information** - User ID and team ID of the design owner
+- **URLs** - Edit and view URLs for quick access to designs
+
+<Warning>
+  **Design content is not indexed.** Due to Canva Connect API limitations, only design metadata (titles, dates, owners) is indexed. The actual visual content, text, and images within designs are not searchable through Grapevine.
+</Warning>
+
+## Setup
+
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Canva**
+    2. Click **Connect Canva Account** to begin the authorization process
+  </Step>
+
+  <Step title="Authorize connection">
+    1. You'll be redirected to Canva to authorize the Grapevine integration
+    2. Log into Canva if needed
+    3. Review the requested permissions
+    4. Click **Allow** to grant access
+  </Step>
+
+  <Step title="Indexing begins">
+    You'll be redirected back to Grapevine and the connection will be saved automatically. Grapevine will begin indexing your Canva design metadata.
+  </Step>
+</Steps>
+
+## Required scopes
+
+The Canva connector requests the following OAuth scopes:
+
+| Scope | Purpose |
+|-------|---------|
+| `asset:read` | Read access to assets |
+| `design:content:read` | Read access to design content |
+| `design:meta:read` | Read access to design metadata (title, dates, owner) |
+| `folder:read` | Read access to folders |
+| `profile:read` | Read user profile (display name) |
+
+## Permissions
+
+- All indexed Canva design metadata is visible to all users in the Grapevine tenant
+- Admin permissions required for initial setup
+
+## Sync behavior
+
+- **Initial sync** - Indexes metadata for all accessible designs
+- **Ongoing syncs** - Runs periodically to capture new and updated designs
+- **Deletions** - Deleted designs are removed from the index
+
+## Rate limits
+
+Canva enforces per-endpoint rate limits:
+
+| Endpoint | Rate Limit |
+|----------|------------|
+| List designs | 100 req/min/user |
+| Get design | 100 req/min/user |
+| List folder items | 100 req/min/user |
+
+<Note>
+  The connector implements automatic retry with exponential backoff when rate limits are encountered.
+</Note>
+
+## Limitations
+
+- **Content not indexed** - Only design metadata is searchable, not the visual content within designs
+- Designs shared with you are indexed, but visibility depends on your Canva permissions
+- Access tokens expire after ~4 hours and are automatically refreshed
