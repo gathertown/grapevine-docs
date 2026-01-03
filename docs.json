@@ -47,6 +47,7 @@
         "pages": [
           "connectors/asana",
           "connectors/attio",
+          "connectors/canva",
           "connectors/confluence",
           "connectors/custom-data",
           "connectors/fireflies",
