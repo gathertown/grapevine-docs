@@ -66,6 +66,7 @@
           "connectors/pylon",
           "connectors/slack",
           "connectors/snowflake",
+          "connectors/teamwork",
           "connectors/trello",
           "connectors/zendesk"
         ]
