@@ -1,0 +1,90 @@
+---
+title: Teamwork
+description: Connect Teamwork to index tasks and comments
+---
+
+The Teamwork connector indexes tasks and their associated comments from your Teamwork projects.
+
+## What gets indexed
+
+- **Tasks** - Task names, descriptions, and full metadata
+- **Comments** - Task comments embedded within their parent tasks
+- **Task metadata** - Project, task list, status, priority, assignee, creator, due dates, tags, and more
+
+### Task details indexed
+
+| Field | Description |
+|-------|-------------|
+| Assignee | User assigned to the task |
+| Attachments | Attachment names (content not indexed) |
+| Completion status | Whether the task is completed and when |
+| Creator | User who created the task |
+| Description | Full task description |
+| Due date | Task deadline |
+| Estimated time | Time estimate in hours/minutes |
+| Parent task | For subtasks, the parent task reference |
+| Priority | Task priority level |
+| Project | Project the task belongs to |
+| Start date | Task start date |
+| Status | Current task status |
+| Tags | Task tags/labels |
+| Task list | Task list within the project |
+
+<Note>
+  Comments are indexed as part of their parent task, not as separate documents. This keeps task discussions together for better search relevance.
+</Note>
+
+## Setup
+
+<Steps>
+  <Step title="Connect to Grapevine">
+    1. In Grapevine, go to [**Integrations**](https://app.getgrapevine.ai/integrations) and click on **Teamwork**
+    2. Click **Connect Teamwork Account** to begin the authorization process
+  </Step>
+
+  <Step title="Authorize connection">
+    1. You'll be redirected to Teamwork to authorize the Grapevine integration
+    2. Log into Teamwork if needed
+    3. Select your Teamwork installation
+    4. Click **Allow** to grant access
+  </Step>
+
+  <Step title="Indexing begins">
+    You'll be redirected back to Grapevine and the connection will be saved automatically. Grapevine will begin indexing your Teamwork tasks and comments.
+  </Step>
+</Steps>
+
+## Permissions
+
+- Only non-private tasks are indexed (private tasks are excluded)
+- All indexed Teamwork tasks are visible to all users in the Grapevine tenant
+
+## Sync behavior
+
+- **Initial sync** - Indexes all tasks across all projects, including completed tasks
+- **Ongoing syncs** - Uses incremental sync to fetch only tasks updated since the last sync
+- **Deletions** - Deleted tasks are removed from the index
+
+<Note>
+  The connector uses batch fetching to efficiently retrieve tasks with their related data (projects, task lists, comments, tags, attachments) in fewer API calls.
+</Note>
+
+## Rate limits
+
+Teamwork enforces rate limits based on your plan:
+
+| Plan | Rate Limit |
+|------|------------|
+| Free | 30 req/min |
+| Premium+ | 150 req/min |
+
+<Note>
+  For large workspaces with many tasks, a Premium or higher plan is recommended for faster initial syncs. The connector implements automatic retry with exponential backoff when rate limits are encountered.
+</Note>
+
+## Limitations
+
+- Private tasks are not indexed (only non-private tasks)
+- Attachment content is not indexed (only attachment names)
+- Task files and documents are not indexed
+- Access tokens are long-lived and do not expire
